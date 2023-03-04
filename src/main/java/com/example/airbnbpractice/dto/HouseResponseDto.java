@@ -4,10 +4,8 @@ import com.example.airbnbpractice.entity.*;
 import lombok.*;
 import org.apache.commons.lang3.ObjectUtils;
 
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class HouseResponseDto {
 
@@ -38,7 +36,7 @@ public class HouseResponseDto {
                     .thumbnailUrl(house.getThumbnailUrl())
                     .detailAddress(house.getDetailAddress())
                     .content(house.getContent())
-                    .likeCount(ObjectUtils.defaultIfNull(house.getLikeUsers(), new ArrayList<HouseLike>()).size())
+                    .likeCount(ObjectUtils.defaultIfNull(house.getLikeUsers(), new ArrayList<HouseWish>()).size())
                     .pricePerDay(house.getPricePerDay())
                     .houseImages(house.getHouseImages().stream().map(HouseImageResponseDto::of).toList())
                     .tags(house.getHouseTags().stream().map(v -> TagResponseDto.of(v.getTag())).toList())

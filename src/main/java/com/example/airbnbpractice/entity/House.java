@@ -28,7 +28,7 @@ public class House extends Timestamped {
     @OneToMany(mappedBy = "house", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<HouseImage> houseImages;
     @OneToMany(mappedBy = "house", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<HouseLike> likeUsers;
+    private Set<HouseWish> likeUsers;
     @OneToMany(mappedBy = "house", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<HouseReport> reports;
 

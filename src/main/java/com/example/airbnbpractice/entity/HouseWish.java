@@ -5,10 +5,10 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Entity(name = "HouseLikes")
+@Entity(name = "HouseWishes")
 @Getter
 @NoArgsConstructor
-public class HouseLike extends Timestamped {
+public class HouseWish extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,4 +26,9 @@ public class HouseLike extends Timestamped {
 
     @Column(name = "house_id")
     private Long houseId;
+
+    public HouseWish(User user, House house) {
+        this.user = user;
+        this.house = house;
+    }
 }
