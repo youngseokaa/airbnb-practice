@@ -46,7 +46,7 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ErrorResponseDto customException(CustomClientException e, HttpServletRequest request){
         log.warn("CustomClientException 발생!!! url:{}, trace:{}",request.getRequestURI(), e.getStackTrace());
-        return ErrorResponseDto.of(HttpStatus.BAD_REQUEST.value(), e.getMessage());
+        return ErrorResponseDto.of(HttpStatus.BAD_REQUEST.value(), e.getErrorMessage().getDescription());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
