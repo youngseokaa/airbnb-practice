@@ -103,15 +103,13 @@ public class HouseService {
         House house = houseRepository.findById(houseId).orElseThrow(() -> new NullPointerException("선택 대상(숙소)이 없습니다"));
         if (houseWishRepository.findByHouseIdAndUserId(houseId, user.getId()).isPresent()) {
             houseWishRepository.deleteHouseWishByHouseIdAndUserId(user.getId(), house.getId());
-            return ResponseDto.of(HttpStatus.OK,"위시리스트에서 제거했습니다");
+            return ResponseDto.of(HttpStatus.OK,"위시리스트에서 제거했습니다", false);
         }
         HouseWish houseWish = new HouseWish(user, house);
         houseWishRepository.save(houseWish);
 
-        return ResponseDto.of(HttpStatus.OK,"위시리스트에 추가했습니다");
+        return ResponseDto.of(HttpStatus.OK,"위시리스트에 추가했습니다", true);
     }
-
-}
 
     @Transactional(readOnly = true)
     public List<HouseResponseDto.HouseRes> registration(UserDetailsImpl userDetails) {

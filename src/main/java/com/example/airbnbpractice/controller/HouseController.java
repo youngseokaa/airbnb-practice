@@ -20,14 +20,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Tag(name = "House")
-@RestController("/api/houses")
+@RestController
+@RequestMapping("/api/houses")
 @RequiredArgsConstructor
 public class HouseController {
 
     private final HouseService houseService;
 
 
-    @GetMapping(value = "/")
+    @GetMapping()
     @SecurityRequirements()
     public ResponseDto<List<HouseResponseDto.HouseRes>> getHouses(
             @RequestParam(required = false) String adminDistrict,
@@ -56,7 +57,7 @@ public class HouseController {
     }
 
 
-    @PostMapping(value = "/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseDto<HouseResponseDto.HouseRes> addHouse(
             @RequestPart HouseRequestDto.HouseAdd dto,
             @RequestPart(required = false) MultipartFile thumbnailImage,
@@ -68,7 +69,7 @@ public class HouseController {
         return ResponseDto.of(HttpStatus.OK, "등록 성공", res);
     }
 
-    @PutMapping(value = "/api/houses/{houseId}")
+    @PutMapping(value = "/{houseId}")
     public ResponseDto<HouseResponseDto.HouseRes> updateHouse(
             @PathVariable Long houseId,
             @RequestBody HouseRequestDto.HouseUpdate dto,
@@ -79,7 +80,7 @@ public class HouseController {
         return ResponseDto.of(HttpStatus.OK, "수정 성공", res);
     }
 
-    @GetMapping(value = "api/houses/registration")
+    @GetMapping(value = "/registration")
     public ResponseDto<List<HouseResponseDto.HouseRes>> registration(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails){
         List<HouseResponseDto.HouseRes> res = houseService.registration(userDetails);

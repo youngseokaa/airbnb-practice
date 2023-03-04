@@ -10,18 +10,16 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Reservation")
 @RestController
+@RequestMapping("/api/reservation")
 @RequiredArgsConstructor
 public class ReservationController {
     private final ReservationService reservationService;
 
-    @PostMapping("/api/reservation")
+    @PostMapping()
     public ResponseDto<ReservationResponseDto.ReservationRes> addReservation(
             @RequestBody ReservationRequestDto.ReservationAdd dto,
             @Parameter(hidden = true)  @AuthenticationPrincipal UserDetailsImpl userDetails
