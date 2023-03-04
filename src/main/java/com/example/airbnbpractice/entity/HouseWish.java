@@ -1,23 +1,17 @@
 package com.example.airbnbpractice.entity;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Date;
 
-@Entity(name = "reportReservations")
+@Entity(name = "HouseWishes")
 @Getter
 @NoArgsConstructor
-public class Reservation extends Timestamped {
+public class HouseWish extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date startDate;
-    private Date endDate;
-    private Integer peopleCount;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
@@ -32,4 +26,9 @@ public class Reservation extends Timestamped {
 
     @Column(name = "house_id")
     private Long houseId;
+
+    public HouseWish(User user, House house) {
+        this.user = user;
+        this.house = house;
+    }
 }
