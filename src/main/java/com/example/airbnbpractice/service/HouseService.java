@@ -3,11 +3,13 @@ package com.example.airbnbpractice.service;
 import com.example.airbnbpractice.common.CustomClientException;
 import com.example.airbnbpractice.common.dto.ErrorMessage;
 import com.example.airbnbpractice.common.s3.S3Service;
+import com.example.airbnbpractice.common.security.UserDetailsImpl;
 import com.example.airbnbpractice.dto.HouseRequestDto;
 import com.example.airbnbpractice.dto.HouseResponseDto;
 import com.example.airbnbpractice.entity.*;
 import com.example.airbnbpractice.repository.HouseRepository;
 import com.example.airbnbpractice.repository.TagRepository;
+import com.example.airbnbpractice.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,6 +26,7 @@ public class HouseService {
     private final HouseRepository houseRepository;
     private final TagRepository tagRepository;
     private final S3Service s3Service;
+    private final UserRepository userRepository;
 
     @Transactional
     public HouseResponseDto.HouseRes addHouse(
@@ -65,4 +69,22 @@ public class HouseService {
 
         return HouseResponseDto.HouseRes.noOwnerOf(house);
     }
-}
+
+    @Transactional
+    public List<HouseResponseDto.HouseRes> registration(UserDetailsImpl userDetails) {
+        User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow(
+                () -> CustomClientException.of(ErrorMessage.NO_USER)
+        );
+        List<House> houses = houseRepository.findAllByOwnerId(user.getId());
+        if(houses == null){
+            throw CustomClientException.of(ErrorMessage.NO_HOUSE);
+        }
+        List<HouseResponseDto.HouseRes> dtoList = new ArrayList<>();
+        for (House house : houses) {
+            HouseResponseDto.HouseRes houseGet = HouseResponseDto.HouseRes.of(house);
+            dtoList.add(houseGet);
+        }
+        return dtoList;
+    }
+    }
+

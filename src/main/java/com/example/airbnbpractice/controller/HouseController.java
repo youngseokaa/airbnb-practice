@@ -47,4 +47,10 @@ public class HouseController {
         HouseResponseDto.HouseRes res = houseService.updateHouse(houseId, dto, userDetails.getUser());
         return ResponseDto.of(HttpStatus.OK, "수정 성공", res);
     }
+
+    @GetMapping(value = "api/houses/registeration")
+    public ResponseDto<List<HouseResponseDto.HouseRes>> registration( @AuthenticationPrincipal UserDetailsImpl userDetails){
+        List<HouseResponseDto.HouseRes> res = houseService.registration(userDetails);
+        return ResponseDto.of(HttpStatus.OK, "수정 성공", res);
+    }
 }
