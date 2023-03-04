@@ -1,7 +1,8 @@
 package com.example.airbnbpractice.service;
 
 import com.example.airbnbpractice.common.CustomClientException;
-import com.example.airbnbpractice.common.dto.ErrorMessage;
+import com.example.airbnbpractice.common.Jwt.JwtUtil;
+import com.example.airbnbpractice.dto.LoginRequestDto;
 import com.example.airbnbpractice.dto.SignupRequestDto;
 import com.example.airbnbpractice.dto.UserResponseDto;
 import com.example.airbnbpractice.entity.User;
@@ -13,11 +14,17 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Objects;
+
+import static com.example.airbnbpractice.common.dto.ErrorMessage.*;
+import static com.example.airbnbpractice.common.dto.ErrorMessage.NOT_MATCH_PASSWORD;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    private final JwtUtil jwtUtil;
 
     @Value("${admin_token}")
     private String ADMIN_TOKEN;
@@ -27,7 +34,7 @@ public class UserService {
     public UserResponseDto signup(SignupRequestDto signupRequestDto) {
 
         if(userRepository.findByEmailAndNickname(signupRequestDto.getEmail(), signupRequestDto.getNickname()).isPresent()) {
-            throw CustomClientException.of(ErrorMessage.DUPLE_USER);
+            throw CustomClientException.of(DUPLE_USER);
         }
 
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
@@ -43,5 +50,25 @@ public class UserService {
         user = userRepository.save(user);
 
         return  new UserResponseDto(user);
+    }
+
+
+    public UserResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
+        String email = loginRequestDto.getEmail();
+        String password = loginRequestDto.getPassword();
+
+        // 사용자 확인
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> CustomClientException.of(NO_USER)
+        );
+
+        // 비밀번호 확인
+        if(!passwordEncoder.matches(password, user.getPassword())){
+            throw CustomClientException.of(NOT_MATCH_PASSWORD);
+        }
+
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getEmail(), user.getRole()));
+
+        return new UserResponseDto(user);
     }
 }

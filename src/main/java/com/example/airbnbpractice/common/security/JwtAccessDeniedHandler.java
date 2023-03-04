@@ -25,12 +25,12 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
         log.info("Access Denied!!! message : {}" + accessDeniedException.getMessage(), request.getRequestURI());
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpStatus.FORBIDDEN.value());
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setCharacterEncoding("utf-8");
 
         try (OutputStream os = response.getOutputStream()) {
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writeValue(os, ErrorResponseDto.of(HttpStatus.BAD_REQUEST.value(), ErrorMessage.TOKEN_ERROR.getDescription()));
+            objectMapper.writeValue(os, ErrorResponseDto.of(HttpStatus.UNAUTHORIZED.value(), ErrorMessage.TOKEN_ERROR.getDescription()));
             os.flush();
         }
     }

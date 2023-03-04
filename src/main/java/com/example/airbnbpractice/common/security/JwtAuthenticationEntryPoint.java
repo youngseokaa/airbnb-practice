@@ -26,12 +26,12 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         log.info("Access Denied!!! message : {}, uri: {}", authException.getMessage(), request.getRequestURI());
         //response에 넣기
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setCharacterEncoding("utf-8");
 
         try (OutputStream os = response.getOutputStream()) {
             ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.writeValue(os, ErrorResponseDto.of(HttpStatus.BAD_REQUEST.value(), ErrorMessage.TOKEN_ERROR.getDescription()));
+            objectMapper.writeValue(os, ErrorResponseDto.of(HttpStatus.UNAUTHORIZED.value(), ErrorMessage.TOKEN_ERROR.getDescription()));
             os.flush();
         }
     }
