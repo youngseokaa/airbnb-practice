@@ -21,7 +21,7 @@ public class Reservation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", insertable = false, updatable = false)
-    private Users user;
+    private User user;
 
     @Column(name = "user_id")
     private Long userId;

@@ -34,7 +34,7 @@ public class House {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "owner_id", insertable = false, updatable = false)
-    private Users owner;
+    private User owner;
 
     @Column(name = "owner_id")
     private Long ownerId;
