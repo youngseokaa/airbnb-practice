@@ -1,7 +1,6 @@
 package com.example.airbnbpractice.controller;
 
 import com.example.airbnbpractice.common.dto.ResponseDto;
-import com.example.airbnbpractice.dto.LoginRequestDto;
 import com.example.airbnbpractice.dto.SignupRequestDto;
 import com.example.airbnbpractice.dto.UserResponseDto;
 import com.example.airbnbpractice.security.UserDetailsImpl;
