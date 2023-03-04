@@ -25,7 +25,7 @@ public class UserController {
 
     private final UserService userService;
     //회원가입
-    @PostMapping("/api/user/signup")
+    @PostMapping("/api/users/signup")
     @SecurityRequirements()
     @Operation(summary = "회원가입하기", description = "회원가입하기 이메일,닉네임 중복 불가")
     public ResponseDto<UserResponseDto> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
@@ -34,21 +34,23 @@ public class UserController {
     }
 
     // 이메일 중복 확인
-    @GetMapping("/users/email/duplicate")
+    @GetMapping("/api/users/email/duplicate")
+    @SecurityRequirements()
     public ResponseDto<CheckResponseDto> checkEmail(@RequestParam String email){
        CheckResponseDto checkResponseDto= userService.checkEmail(email);
         return ResponseDto.of(HttpStatus.OK,"중복이 확인되었습니다",checkResponseDto);
     }
 
     // 닉네임 중복 확인
-    @GetMapping("/users/nickName/duplicate")
+    @GetMapping("/api/users/nickName/duplicate")
+    @SecurityRequirements()
     public ResponseDto<CheckResponseDto> checkNickname(@RequestParam String nickName){
         CheckResponseDto checkResponseDto= userService.checkNickname(nickName);
         return ResponseDto.of(HttpStatus.OK,"중복이 확인되었습니다",checkResponseDto);
     }
 
     // 로그인 하기
-    @PostMapping("/api/user/login")
+    @PostMapping("/api/users/login")
     @SecurityRequirements()
     @Operation(summary = "로그인 하기", description = "로그인 accessToken 발급")
     public ResponseDto<UserResponseDto> login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
