@@ -1,5 +1,7 @@
 package com.example.airbnbpractice.service;
 
+import com.example.airbnbpractice.common.CustomClientException;
+import com.example.airbnbpractice.common.dto.ErrorMessage;
 import com.example.airbnbpractice.common.s3.S3Service;
 import com.example.airbnbpractice.dto.HouseRequestDto;
 import com.example.airbnbpractice.dto.HouseResponseDto;
@@ -33,7 +35,7 @@ public class HouseService {
         String thumbnailImageURL = s3Service.uploadSingle(thumbnailImage);
         List<String> houseImageURLs = s3Service.upload(houseImages);
 
-        House house = House.builder().thumbnailUrl(thumbnailImageURL).dto(dto).owner(user).build();
+        House house = House.builder().thumbnailUrl(thumbnailImageURL).dto(dto).ownerId(user.getId()).build();
 
         for (String houseImageURL : houseImageURLs) {
             house.addHouseImage(HouseImage.builder().house(house).imageURL(houseImageURL).build());
@@ -45,6 +47,22 @@ public class HouseService {
 
         house = houseRepository.save(house);
 
-        return HouseResponseDto.HouseRes.of(house);
+        return HouseResponseDto.HouseRes.noOwnerOf(house);
+    }
+
+    @Transactional
+    public HouseResponseDto.HouseRes updateHouse(Long houseId, HouseRequestDto.HouseUpdate dto, User user) {
+
+        House house = houseRepository.findById(houseId).orElseThrow(
+                () -> CustomClientException.of(ErrorMessage.NO_HOUSE)
+        );
+
+        if (!house.getOwnerId().equals(user.getId())) {
+            throw CustomClientException.of(ErrorMessage.EDIT_REJECT);
+        }
+
+        house.update(dto);
+
+        return HouseResponseDto.HouseRes.noOwnerOf(house);
     }
 }

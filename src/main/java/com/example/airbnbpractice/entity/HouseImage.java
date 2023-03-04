@@ -17,11 +17,7 @@ public class HouseImage extends Timestamped {
     private String imageURL;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "house_id", insertable = false, updatable = false)
     private House house;
-
-    @Column(name = "house_id")
-    private Long houseId;
 
     public void setHouse(House house) {
         if(this.house != null) {

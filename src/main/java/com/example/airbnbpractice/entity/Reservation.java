@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Date;
 
-@Entity(name = "reportReservations")
+@Entity(name = "reservations")
 @Getter
 @NoArgsConstructor
 public class Reservation extends Timestamped {

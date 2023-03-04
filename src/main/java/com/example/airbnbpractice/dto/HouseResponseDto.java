@@ -36,6 +36,7 @@ public class HouseResponseDto {
                     .id(house.getId())
                     .maxPeople(house.getMaxPeople())
                     .thumbnailUrl(house.getThumbnailUrl())
+                    .adminDistrict(house.getAdminDistrict())
                     .detailAddress(house.getDetailAddress())
                     .content(house.getContent())
                     .likeCount(ObjectUtils.defaultIfNull(house.getLikeUsers(), new ArrayList<HouseLike>()).size())
@@ -43,6 +44,21 @@ public class HouseResponseDto {
                     .houseImages(house.getHouseImages().stream().map(HouseImageResponseDto::of).toList())
                     .tags(house.getHouseTags().stream().map(v -> TagResponseDto.of(v.getTag())).toList())
                     .owner(UserResponseDto.of(house.getOwner()))
+                    .build();
+        }
+
+        public static HouseRes noOwnerOf(House house) {
+            return HouseRes.builder()
+                    .id(house.getId())
+                    .maxPeople(house.getMaxPeople())
+                    .thumbnailUrl(house.getThumbnailUrl())
+                    .adminDistrict(house.getAdminDistrict())
+                    .detailAddress(house.getDetailAddress())
+                    .content(house.getContent())
+                    .likeCount(ObjectUtils.defaultIfNull(house.getLikeUsers(), new ArrayList<HouseLike>()).size())
+                    .pricePerDay(house.getPricePerDay())
+                    .houseImages(house.getHouseImages().stream().map(HouseImageResponseDto::of).toList())
+                    .tags(house.getHouseTags().stream().map(v -> TagResponseDto.of(v.getTag())).toList())
                     .build();
         }
     }
