@@ -2,18 +2,22 @@ package com.example.airbnbpractice.service;
 
 import com.example.airbnbpractice.common.CustomClientException;
 import com.example.airbnbpractice.common.dto.ErrorMessage;
+import com.example.airbnbpractice.common.dto.ResponseDto;
 import com.example.airbnbpractice.common.s3.S3Service;
 import com.example.airbnbpractice.common.security.UserDetailsImpl;
+import com.example.airbnbpractice.dto.CheckResponseDto;
 import com.example.airbnbpractice.dto.HouseRequestDto;
 import com.example.airbnbpractice.dto.HouseResponseDto;
 import com.example.airbnbpractice.entity.*;
 import com.example.airbnbpractice.repository.HouseRepository;
+import com.example.airbnbpractice.repository.HouseWishRepository;
 import com.example.airbnbpractice.repository.TagRepository;
 import com.example.airbnbpractice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +30,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class HouseService {
     private final HouseRepository houseRepository;
+    private final HouseWishRepository houseWishRepository;
     private final TagRepository tagRepository;
     private final S3Service s3Service;
     private final UserRepository userRepository;
@@ -92,6 +97,21 @@ public class HouseService {
 
         return HouseResponseDto.HouseRes.noOwnerOf(house);
     }
+
+    @Transactional
+    public ResponseDto<Boolean> toggleWish(Long houseId, User user) {
+        House house = houseRepository.findById(houseId).orElseThrow(() -> new NullPointerException("선택 대상(숙소)이 없습니다"));
+        if (houseWishRepository.findByHouseIdAndUserId(houseId, user.getId()).isPresent()) {
+            houseWishRepository.deleteHouseWishByHouseIdAndUserId(user.getId(), house.getId());
+            return ResponseDto.of(HttpStatus.OK,"위시리스트에서 제거했습니다");
+        }
+        HouseWish houseWish = new HouseWish(user, house);
+        houseWishRepository.save(houseWish);
+
+        return ResponseDto.of(HttpStatus.OK,"위시리스트에 추가했습니다");
+    }
+
+}
 
     @Transactional(readOnly = true)
     public List<HouseResponseDto.HouseRes> registration(UserDetailsImpl userDetails) {

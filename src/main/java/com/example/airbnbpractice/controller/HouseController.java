@@ -20,14 +20,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Tag(name = "House")
-@RestController
+@RestController("/api/houses")
 @RequiredArgsConstructor
 public class HouseController {
 
     private final HouseService houseService;
 
 
-    @GetMapping(value = "/api/houses")
+    @GetMapping(value = "/")
     @SecurityRequirements()
     public ResponseDto<List<HouseResponseDto.HouseRes>> getHouses(
             @RequestParam(required = false) String adminDistrict,
@@ -48,7 +48,15 @@ public class HouseController {
                 LocalDate.parse(startDate), LocalDate.parse(endDate), page, size, sortBy, isAsc, userId));
     }
 
-    @PostMapping(value = "/api/houses", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping("/wish/{houseId}")
+    public ResponseDto<Boolean> toggleWish(@PathVariable Long houseId,
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        return houseService.toggleWish(houseId, userDetails.getUser());
+    }
+
+
+    @PostMapping(value = "/", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseDto<HouseResponseDto.HouseRes> addHouse(
             @RequestPart HouseRequestDto.HouseAdd dto,
             @RequestPart(required = false) MultipartFile thumbnailImage,
