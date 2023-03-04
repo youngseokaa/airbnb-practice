@@ -52,8 +52,9 @@ public class SecurityConfig {
 
                 .authorizeRequests()
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                .antMatchers("/api/user/signup", "/api/user/login").permitAll()
+                .antMatchers("/api/user/signup", "/api/user/login","/users/email/**","/users/nickName/**").permitAll()
                 .antMatchers("/api/**").authenticated()
+                .antMatchers("/users/**").authenticated()
 
                 .and()
                 .sessionManagement()

@@ -2,6 +2,8 @@ package com.example.airbnbpractice.service;
 
 import com.example.airbnbpractice.common.CustomClientException;
 import com.example.airbnbpractice.common.Jwt.JwtUtil;
+import com.example.airbnbpractice.common.dto.ResponseDto;
+import com.example.airbnbpractice.dto.CheckResponseDto;
 import com.example.airbnbpractice.dto.LoginRequestDto;
 import com.example.airbnbpractice.dto.SignupRequestDto;
 import com.example.airbnbpractice.dto.UserResponseDto;
@@ -70,5 +72,23 @@ public class UserService {
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getEmail(), user.getRole()));
 
         return new UserResponseDto(user);
+    }
+
+    public CheckResponseDto checkEmail(String email) {
+        // 중복 이메일 확인
+        if(userRepository.findByEmail(email).isPresent()){
+            throw CustomClientException.of(EXIST_EMAIL);
+        }
+
+        return new CheckResponseDto();
+    }
+
+    public CheckResponseDto checkNickname(String nickName) {
+        // 중복 닉네임 확인
+        if(userRepository.findByNickname(nickName).isPresent()){
+            throw CustomClientException.of(EXIST_NICKNAME);
+        }
+
+        return new CheckResponseDto();
     }
 }
