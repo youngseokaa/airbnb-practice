@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity(name = "HouseLikes")
 @Getter
 @NoArgsConstructor
-public class HouseLike {
+public class HouseLike extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

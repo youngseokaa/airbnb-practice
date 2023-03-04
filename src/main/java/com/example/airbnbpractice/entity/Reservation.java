@@ -10,7 +10,7 @@ import java.util.Date;
 @Entity(name = "reportReservations")
 @Getter
 @NoArgsConstructor
-public class Reservation {
+public class Reservation extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

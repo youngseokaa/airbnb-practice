@@ -27,6 +27,20 @@ public class S3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    public String uploadSingle(MultipartFile multipartFile) {
+        String fileName = createFileName(multipartFile.getOriginalFilename());
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(multipartFile.getSize());
+        objectMetadata.setContentType(multipartFile.getContentType());
+
+        try(InputStream inputStream = multipartFile.getInputStream()) {
+            amazonS3Client.putObject(new PutObjectRequest(bucket+"/images/airbnb", fileName, inputStream, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+            return amazonS3Client.getUrl(bucket+"/images/airbnb", fileName).toString();
+        } catch(IOException e) {
+            throw CustomClientException.of(ErrorMessage.S3_UPLOAD_ERROR);
+        }
+    }
     public List<String> upload(List<MultipartFile> multipartFile) {
         List<String> imgUrlList = new ArrayList<>();
 
