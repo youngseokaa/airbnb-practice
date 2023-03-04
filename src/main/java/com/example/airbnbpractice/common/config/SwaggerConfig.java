@@ -21,16 +21,7 @@ public class SwaggerConfig {
                 .title("airbnb copy API 문서") // 타이틀
                 .version("1.0") // 문서 버전
                 .description("airbnb copy api docs") // 문서 설명
-                .contact(new Contact()
-                        .name("FE: 이한결")
-                        .name("FE: 이현동")
-                        .name("FE: 최하영")
-                        .name("BE: 권성민")
-                        .name("BE: 이선옥")
-                        .name("BE: 김동민")
-                        .name("BE: 손채이"));
-
-
+                .contact(new Contact());
 
         // SecuritySecheme명
         String jwtSchemeName = "Authorization";
