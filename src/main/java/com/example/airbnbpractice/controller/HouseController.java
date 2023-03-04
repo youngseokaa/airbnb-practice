@@ -71,8 +71,9 @@ public class HouseController {
         return ResponseDto.of(HttpStatus.OK, "수정 성공", res);
     }
 
-    @GetMapping(value = "api/houses/registeration")
-    public ResponseDto<List<HouseResponseDto.HouseRes>> registration( @AuthenticationPrincipal UserDetailsImpl userDetails){
+    @GetMapping(value = "api/houses/registration")
+    public ResponseDto<List<HouseResponseDto.HouseRes>> registration(
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails){
         List<HouseResponseDto.HouseRes> res = houseService.registration(userDetails);
         return ResponseDto.of(HttpStatus.OK, "수정 성공", res);
     }
