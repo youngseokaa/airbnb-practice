@@ -1,5 +1,7 @@
 package com.example.airbnbpractice.service;
 
+import com.example.airbnbpractice.common.CustomClientException;
+import com.example.airbnbpractice.common.dto.ErrorMessage;
 import com.example.airbnbpractice.dto.SignupRequestDto;
 import com.example.airbnbpractice.dto.UserResponseDto;
 import com.example.airbnbpractice.entity.User;
@@ -24,6 +26,10 @@ public class UserService {
     @Transactional
     public UserResponseDto signup(SignupRequestDto signupRequestDto) {
 
+        if(userRepository.findByEmailAndNickname(signupRequestDto.getEmail(), signupRequestDto.getNickname()).isPresent()) {
+            throw CustomClientException.of(ErrorMessage.DUPLE_USER);
+        }
+
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
         UserRoleEnum userRoleEnum = UserRoleEnum.USER;
         if(signupRequestDto.getIsAdmin() && Objects.equals(ADMIN_TOKEN, signupRequestDto.getAdminToken())){
@@ -33,6 +39,8 @@ public class UserService {
                 .email(signupRequestDto.getEmail())
                 .password(password)
                 .nickname(signupRequestDto.getNickname()).userRoleEnum(userRoleEnum).build();
+
+        user = userRepository.save(user);
 
         return  new UserResponseDto(user);
     }

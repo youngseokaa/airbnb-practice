@@ -1,6 +1,7 @@
 package com.example.airbnbpractice.dto;
 
 import com.example.airbnbpractice.entity.*;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,8 @@ public class SignupRequestDto {
     @NotNull
     private String nickname;
 
+    @NotNull
+    @Schema(defaultValue = "false")
     private Boolean isAdmin = false;
 
     private String adminToken = "";

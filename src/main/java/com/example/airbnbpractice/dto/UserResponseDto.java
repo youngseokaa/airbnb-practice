@@ -2,7 +2,9 @@ package com.example.airbnbpractice.dto;
 
 import com.example.airbnbpractice.entity.User;
 import com.example.airbnbpractice.entity.UserRoleEnum;
+import lombok.Getter;
 
+@Getter
 public class UserResponseDto {
     private Long id;
 
