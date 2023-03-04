@@ -1,5 +1,7 @@
 package com.example.airbnbpractice.entity;
 
+import com.example.airbnbpractice.dto.SignupRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,7 +30,15 @@ public class User {
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
 
-
+    @Builder
+    public User (String email, String nickname ,String password ,UserRoleEnum userRoleEnum,String profileImageURL,Long id){
+        this.profileImageURL = profileImageURL;
+        this.id = id;
+        this.email = email;
+        this.nickname = nickname;
+        this.password = password;
+        this.role = userRoleEnum;
+    }
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     Set<House> houses;
