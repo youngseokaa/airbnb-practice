@@ -1,7 +1,11 @@
 package com.example.airbnbpractice.common.config;
 
 //import com.example.bbangeobung.auth.CustomOAuth2UserService;
+import com.example.airbnbpractice.common.Jwt.JwtAuthFilter;
+import com.example.airbnbpractice.common.Jwt.JwtUtil;
 import com.example.airbnbpractice.common.cors.CorsFilter;
+import com.example.airbnbpractice.common.security.JwtAccessDeniedHandler;
+import com.example.airbnbpractice.common.security.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +26,11 @@ import org.springframework.web.cors.CorsUtils;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final JwtAuthFilter jwtAuthFilter;
+    private final CorsFilter corsFilter;
+    private final JwtAccessDeniedHandler accessDeniedHandler;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public WebSecurityCustomizer configure() {
@@ -50,7 +59,13 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
-                .addFilterBefore(new CorsFilter(), UsernamePasswordAuthenticationFilter.class);
+                .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPoint)
+                .accessDeniedHandler(accessDeniedHandler)
+
+                .and()
+                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthFilter, CorsFilter.class);
 
 
 

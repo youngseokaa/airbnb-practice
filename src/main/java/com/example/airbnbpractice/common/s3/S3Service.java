@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.example.airbnbpractice.common.CustomClientException;
+import com.example.airbnbpractice.common.dto.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -37,11 +38,11 @@ public class S3Service {
             objectMetadata.setContentType(file.getContentType());
 
             try(InputStream inputStream = file.getInputStream()) {
-                amazonS3Client.putObject(new PutObjectRequest(bucket+"/image", fileName, inputStream, objectMetadata)
+                amazonS3Client.putObject(new PutObjectRequest(bucket+"/images/airbnb", fileName, inputStream, objectMetadata)
                         .withCannedAcl(CannedAccessControlList.PublicRead));
-                imgUrlList.add(amazonS3Client.getUrl(bucket+"/image", fileName).toString());
+                imgUrlList.add(amazonS3Client.getUrl(bucket+"/images/airbnb", fileName).toString());
             } catch(IOException e) {
-                throw new CustomClientException("이미지 에러");
+                throw CustomClientException.of(ErrorMessage.S3_UPLOAD_ERROR);
             }
         }
         return imgUrlList;
@@ -55,7 +56,7 @@ public class S3Service {
     // 파일 유효성 검사
     private String getFileExtension(String fileName) {
         if (fileName.length() == 0) {
-            throw new CustomClientException("이미지 에러");
+            throw CustomClientException.of(ErrorMessage.S3_UPLOAD_ERROR);
         }
         ArrayList<String> fileValidate = new ArrayList<>();
         fileValidate.add(".jpg");
@@ -66,7 +67,7 @@ public class S3Service {
         fileValidate.add(".PNG");
         String idxFileName = fileName.substring(fileName.lastIndexOf("."));
         if (!fileValidate.contains(idxFileName)) {
-            throw new CustomClientException("이미지 에러");
+            throw CustomClientException.of(ErrorMessage.S3_UPLOAD_ERROR);
         }
         return fileName.substring(fileName.lastIndexOf("."));
     }
