@@ -16,6 +16,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Tag(name = "House")
@@ -24,6 +25,28 @@ import java.util.List;
 public class HouseController {
 
     private final HouseService houseService;
+
+
+    @GetMapping(value = "/api/houses")
+    @SecurityRequirements()
+    public ResponseDto<List<HouseResponseDto.HouseRes>> getHouses(
+            @RequestParam(required = false) String adminDistrict,
+            @RequestParam(required = false, defaultValue = "3") Integer peopleCount,
+            @RequestParam(required = false, defaultValue = "0") Integer minPrice,
+            @RequestParam(required = false, defaultValue = "100000") Integer maxPrice,
+            @RequestParam(defaultValue = "2023-03-04") String startDate,
+            @RequestParam(defaultValue = "2023-03-10") String endDate,
+            @RequestParam(defaultValue = "0")  Integer page,
+            @RequestParam(defaultValue = "10") Integer size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "false") Boolean isAsc,
+            @RequestParam(required = false) Long userId
+    ) {
+
+        return ResponseDto.of(HttpStatus.OK, "등록 성공", houseService.getHouses(
+                adminDistrict, peopleCount, minPrice, maxPrice,
+                LocalDate.parse(startDate), LocalDate.parse(endDate), page, size, sortBy, isAsc, userId));
+    }
 
     @PostMapping(value = "/api/houses", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseDto<HouseResponseDto.HouseRes> addHouse(

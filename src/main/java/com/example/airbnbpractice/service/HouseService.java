@@ -11,10 +11,15 @@ import com.example.airbnbpractice.repository.TagRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -23,6 +28,27 @@ public class HouseService {
     private final HouseRepository houseRepository;
     private final TagRepository tagRepository;
     private final S3Service s3Service;
+
+    @Transactional(readOnly = true)
+    public List<HouseResponseDto.HouseRes> getHouses(
+            String adminDistrict, Integer peopleCount,
+            Integer minPrice, Integer maxPrice,
+            LocalDate startDate, LocalDate endDate,
+             Integer page, Integer size, String sortBy,
+            Boolean isAsc, Long userId
+    ) {
+
+
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, "id");
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        List<House> houses = houseRepository.searchHomes(adminDistrict, peopleCount,
+                minPrice, maxPrice,
+                startDate, endDate, pageable);
+
+        return houses.stream().map(HouseResponseDto.HouseRes::of).toList();
+    }
 
     @Transactional
     public HouseResponseDto.HouseRes addHouse(
