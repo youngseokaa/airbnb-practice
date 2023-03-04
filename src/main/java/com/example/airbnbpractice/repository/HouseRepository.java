@@ -7,8 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface HouseRepository extends JpaRepository<House, Long> {
+    List<House> findAllByOwnerId(Long ownerId);
+
+
     @Query("SELECT h FROM houses h WHERE (:adminDistrict IS NULL " +
             "OR :adminDistrict = '' OR h.adminDistrict = :adminDistrict) " +
             "AND (:peopleCount IS NULL OR h.maxPeople >= :peopleCount)" +
