@@ -15,8 +15,9 @@ public enum ErrorMessage {
 
     NO_USER("가입된 유저가 없습니다."),
     NOT_MATCH_PASSWORD("비밀번호가 일치하지 않습니다."),
-    TOKEN_EXPIRED("토큰이 만료되었습니다.");
-
+    TOKEN_EXPIRED("토큰이 만료되었습니다."),
+    EXIST_NICKNAME("이미존재하는 닉네임 입니다"),
+    EXIST_EMAIL("이미존재하는 이메일입니다");
 
     private final String description;
 }

@@ -1,6 +1,7 @@
 package com.example.airbnbpractice.controller;
 
 import com.example.airbnbpractice.common.dto.ResponseDto;
+import com.example.airbnbpractice.dto.CheckResponseDto;
 import com.example.airbnbpractice.dto.LoginRequestDto;
 import com.example.airbnbpractice.dto.SignupRequestDto;
 import com.example.airbnbpractice.dto.UserResponseDto;
@@ -32,6 +33,19 @@ public class UserController {
         return ResponseDto.of(HttpStatus.OK,"회원가입에 성공하였습니다",userResponseDto);
     }
 
+    // 이메일 중복 확인
+    @GetMapping("/users/email/duplicate")
+    public ResponseDto<CheckResponseDto> checkEmail(@RequestParam String email){
+       CheckResponseDto checkResponseDto= userService.checkEmail(email);
+        return ResponseDto.of(HttpStatus.OK,"중복이 확인되었습니다",checkResponseDto);
+    }
+
+    // 닉네임 중복 확인
+    @GetMapping("/users/nickName/duplicate")
+    public ResponseDto<CheckResponseDto> checkNickname(@RequestParam String nickName){
+        CheckResponseDto checkResponseDto= userService.checkNickname(nickName);
+        return ResponseDto.of(HttpStatus.OK,"중복이 확인되었습니다",checkResponseDto);
+    }
 
     // 로그인 하기
     @PostMapping("/api/user/login")
