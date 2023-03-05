@@ -33,6 +33,8 @@ public class HouseResponseDto {
         private UserResponseDto owner;
 
         public static HouseRes of(House house, Long userId) {
+
+            List<HouseWish> wishHouses = ObjectUtils.defaultIfNull(house.getWishHouses(), new ArrayList<HouseWish>()).stream().toList();
             HouseResBuilder builder = HouseRes.builder()
                     .id(house.getId())
                     .maxPeople(house.getMaxPeople())
@@ -40,24 +42,21 @@ public class HouseResponseDto {
                     .adminDistrict(house.getAdminDistrict())
                     .detailAddress(house.getDetailAddress())
                     .content(house.getContent())
-                    .likeCount(ObjectUtils.defaultIfNull(house.getWishHouses(), new ArrayList<HouseWish>()).size())
+                    .likeCount(wishHouses.size())
                     .pricePerDay(house.getPricePerDay())
                     .houseImages(house.getHouseImages().stream().map(HouseImageResponseDto::of).toList())
                     .tags(house.getHouseTags().stream().map(v -> TagResponseDto.of(v.getTag())).toList())
                     .owner(UserResponseDto.of(house.getOwner()));
 
-            if (house.getWishHouses() != null) {
-                builder.isLike(false);
-            }
-            else {
-                builder.isLike(house.getWishHouses().stream().anyMatch(v -> v.getUserId().equals(userId)));
-            }
+
+            builder.isLike(wishHouses.stream().anyMatch(v -> v.getUserId().equals(userId)));
 
             return builder.build();
         }
 
         public static HouseRes noOwnerOf(House house, Long userId) {
 
+             List<HouseWish> wishHouses = ObjectUtils.defaultIfNull(house.getWishHouses(), new ArrayList<HouseWish>()).stream().toList();
             HouseResBuilder builder = HouseRes.builder()
                     .id(house.getId())
                     .maxPeople(house.getMaxPeople())
@@ -65,17 +64,12 @@ public class HouseResponseDto {
                     .adminDistrict(house.getAdminDistrict())
                     .detailAddress(house.getDetailAddress())
                     .content(house.getContent())
-                    .likeCount(ObjectUtils.defaultIfNull(house.getWishHouses(), new ArrayList<HouseWish>()).size())
+                    .likeCount(wishHouses.size())
                     .pricePerDay(house.getPricePerDay())
                     .houseImages(house.getHouseImages().stream().map(HouseImageResponseDto::of).toList())
                     .tags(house.getHouseTags().stream().map(v -> TagResponseDto.of(v.getTag())).toList());
 
-            if (house.getWishHouses() != null) {
-                builder.isLike(false);
-            }
-            else {
-                builder.isLike(house.getWishHouses().stream().anyMatch(v -> v.getUserId().equals(userId)));
-            }
+            builder.isLike(wishHouses.stream().anyMatch(v -> v.getUserId().equals(userId)));
 
             return builder.build();
         }
