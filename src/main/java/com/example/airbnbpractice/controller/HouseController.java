@@ -53,7 +53,13 @@ public class HouseController {
     public ResponseDto<Boolean> toggleWish(@PathVariable Long houseId,
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        return houseService.toggleWish(houseId, userDetails.getUser());
+
+        if (houseService.toggleWish(houseId, userDetails.getUser())) {
+            return ResponseDto.of(HttpStatus.OK,"위시리스트에 추가했습니다", true);
+        }
+        else {
+            return ResponseDto.of(HttpStatus.OK,"위시리스트에서 제거했습니다", false);
+        }
     }
 
 

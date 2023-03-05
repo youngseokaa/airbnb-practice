@@ -30,5 +30,7 @@ public class HouseWish extends Timestamped {
     public HouseWish(User user, House house) {
         this.user = user;
         this.house = house;
+        this.userId = user.getId();
+        this.houseId = house.getId();
     }
 }

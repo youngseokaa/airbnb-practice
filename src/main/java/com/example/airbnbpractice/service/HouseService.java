@@ -137,16 +137,17 @@ public class HouseService {
     }
 
     @Transactional
-    public ResponseDto<Boolean> toggleWish(Long houseId, User user) {
-        House house = houseRepository.findById(houseId).orElseThrow(() -> new NullPointerException("선택 대상(숙소)이 없습니다"));
+    public Boolean toggleWish(Long houseId, User user) {
+        House house = houseRepository.findById(houseId).orElseThrow(() -> new CustomClientException(ErrorMessage.NO_HOUSE));
+
         if (houseWishRepository.findByHouseIdAndUserId(houseId, user.getId()).isPresent()) {
             houseWishRepository.deleteHouseWishByHouseIdAndUserId(user.getId(), house.getId());
-            return ResponseDto.of(HttpStatus.OK,"위시리스트에서 제거했습니다", false);
+            return false;
         }
         HouseWish houseWish = new HouseWish(user, house);
         houseWishRepository.save(houseWish);
 
-        return ResponseDto.of(HttpStatus.OK,"위시리스트에 추가했습니다", true);
+        return true;
     }
 
     @Transactional(readOnly = true)
@@ -165,5 +166,5 @@ public class HouseService {
         }
         return dtoList;
     }
-    }
+}
 
