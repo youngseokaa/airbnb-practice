@@ -3,6 +3,7 @@ package com.example.airbnbpractice.dto;
 import com.example.airbnbpractice.entity.*;
 import lombok.*;
 import org.apache.commons.lang3.ObjectUtils;
+import org.springframework.security.core.parameters.P;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,8 @@ public class HouseResponseDto {
         private Integer maxPeople;
         private Integer pricePerDay;
 
+        private Boolean isLike;
+
         private int likeCount;
         private List<HouseImageResponseDto> houseImages;
 
@@ -29,35 +32,52 @@ public class HouseResponseDto {
 
         private UserResponseDto owner;
 
-        public static HouseRes of(House house) {
-            return HouseRes.builder()
+        public static HouseRes of(House house, Long userId) {
+            HouseResBuilder builder = HouseRes.builder()
                     .id(house.getId())
                     .maxPeople(house.getMaxPeople())
                     .thumbnailUrl(house.getThumbnailUrl())
                     .adminDistrict(house.getAdminDistrict())
                     .detailAddress(house.getDetailAddress())
                     .content(house.getContent())
-                    .likeCount(ObjectUtils.defaultIfNull(house.getLikeUsers(), new ArrayList<HouseWish>()).size())
+                    .likeCount(ObjectUtils.defaultIfNull(house.getWishHouses(), new ArrayList<HouseWish>()).size())
                     .pricePerDay(house.getPricePerDay())
                     .houseImages(house.getHouseImages().stream().map(HouseImageResponseDto::of).toList())
                     .tags(house.getHouseTags().stream().map(v -> TagResponseDto.of(v.getTag())).toList())
-                    .owner(UserResponseDto.of(house.getOwner()))
-                    .build();
+                    .owner(UserResponseDto.of(house.getOwner()));
+
+            if (house.getWishHouses() != null) {
+                builder.isLike(false);
+            }
+            else {
+                builder.isLike(house.getWishHouses().stream().anyMatch(v -> v.getUserId().equals(userId)));
+            }
+
+            return builder.build();
         }
 
-        public static HouseRes noOwnerOf(House house) {
-            return HouseRes.builder()
+        public static HouseRes noOwnerOf(House house, Long userId) {
+
+            HouseResBuilder builder = HouseRes.builder()
                     .id(house.getId())
                     .maxPeople(house.getMaxPeople())
                     .thumbnailUrl(house.getThumbnailUrl())
                     .adminDistrict(house.getAdminDistrict())
                     .detailAddress(house.getDetailAddress())
                     .content(house.getContent())
-                    .likeCount(ObjectUtils.defaultIfNull(house.getLikeUsers(), new ArrayList<HouseWish>()).size())
+                    .likeCount(ObjectUtils.defaultIfNull(house.getWishHouses(), new ArrayList<HouseWish>()).size())
                     .pricePerDay(house.getPricePerDay())
                     .houseImages(house.getHouseImages().stream().map(HouseImageResponseDto::of).toList())
-                    .tags(house.getHouseTags().stream().map(v -> TagResponseDto.of(v.getTag())).toList())
-                    .build();
+                    .tags(house.getHouseTags().stream().map(v -> TagResponseDto.of(v.getTag())).toList());
+
+            if (house.getWishHouses() != null) {
+                builder.isLike(false);
+            }
+            else {
+                builder.isLike(house.getWishHouses().stream().anyMatch(v -> v.getUserId().equals(userId)));
+            }
+
+            return builder.build();
         }
     }
 }

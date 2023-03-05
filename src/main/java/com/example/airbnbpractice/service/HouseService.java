@@ -53,7 +53,7 @@ public class HouseService {
                 minPrice, maxPrice,
                 startDate, endDate, pageable);
 
-        return houses.stream().map(HouseResponseDto.HouseRes::of).toList();
+        return houses.stream().map(v -> HouseResponseDto.HouseRes.of(v, userId)).toList();
     }
 
     @Transactional
@@ -88,7 +88,7 @@ public class HouseService {
 
         house = houseRepository.save(house);
 
-        return HouseResponseDto.HouseRes.noOwnerOf(house);
+        return HouseResponseDto.HouseRes.noOwnerOf(house, null);
     }
 
     @Transactional
@@ -133,7 +133,7 @@ public class HouseService {
 
         }
 
-        return HouseResponseDto.HouseRes.noOwnerOf(house);
+        return HouseResponseDto.HouseRes.noOwnerOf(house, user.getId());
     }
 
     @Transactional
@@ -152,19 +152,35 @@ public class HouseService {
 
     @Transactional(readOnly = true)
     public List<HouseResponseDto.HouseRes> registration(UserDetailsImpl userDetails) {
-        User user = userRepository.findByEmail(userDetails.getUsername()).orElseThrow(
-                () -> CustomClientException.of(ErrorMessage.NO_USER)
-        );
-        List<House> houses = houseRepository.findAllByOwnerId(user.getId());
+        List<House> houses = houseRepository.findAllByOwnerId(userDetails.getUser().getId());
         if(houses == null){
             throw CustomClientException.of(ErrorMessage.NO_HOUSE);
         }
         List<HouseResponseDto.HouseRes> dtoList = new ArrayList<>();
         for (House house : houses) {
-            HouseResponseDto.HouseRes houseGet = HouseResponseDto.HouseRes.of(house);
+            HouseResponseDto.HouseRes houseGet = HouseResponseDto.HouseRes.noOwnerOf(house, userDetails.getUser().getId());
             dtoList.add(houseGet);
         }
         return dtoList;
+    }
+
+
+    @Transactional(readOnly = true)
+    public HouseResponseDto.HouseRes getHouse(Long houseId, Long userId) {
+
+        House house = houseRepository.findById(houseId).orElseThrow(
+                () -> CustomClientException.of(ErrorMessage.NO_HOUSE)
+        );
+
+        return HouseResponseDto.HouseRes.of(house, userId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<HouseResponseDto.HouseRes> wishHouses(User user) {
+
+        List<House> houses = houseRepository.findByWishHouses_UserId(user.getId());
+
+        return houses.stream().map(v -> HouseResponseDto.HouseRes.of(v, user.getId())).toList();
     }
 }
 

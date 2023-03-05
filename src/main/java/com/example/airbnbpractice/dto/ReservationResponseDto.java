@@ -30,7 +30,7 @@ public class ReservationResponseDto {
                     .checkout(reservation.getCheckout())
                     .peopleCount(reservation.getPeopleCount())
                     .user(UserResponseDto.of(reservation.getUser()))
-                    .house(HouseResponseDto.HouseRes.of(reservation.getHouse()))
+                    .house(HouseResponseDto.HouseRes.of(reservation.getHouse(), reservation.getUser().getId()))
                     .build();
         }
     }

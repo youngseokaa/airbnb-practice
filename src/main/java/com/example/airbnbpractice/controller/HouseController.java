@@ -84,6 +84,22 @@ public class HouseController {
         return ResponseDto.of(HttpStatus.OK, "수정 성공", res);
     }
 
+
+    @GetMapping("/wish")
+    public ResponseDto<List<HouseResponseDto.HouseRes>> wishHouses(
+            @Parameter(hidden = true)  @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+
+        return ResponseDto.of(HttpStatus.OK, "조회 완료", houseService.wishHouses(userDetails.getUser()));
+    }
+
+
+    @GetMapping("/{houseId}")
+    public ResponseDto<HouseResponseDto.HouseRes> getHouse(@PathVariable Long houseId, @RequestParam Long userId) {
+
+        return ResponseDto.of(HttpStatus.OK, "조회 완료", houseService.getHouse(houseId, userId));
+    }
+
     @GetMapping(value = "/registration")
     public ResponseDto<List<HouseResponseDto.HouseRes>> registration(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails){
