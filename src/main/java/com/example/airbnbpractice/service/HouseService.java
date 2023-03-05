@@ -57,15 +57,26 @@ public class HouseService {
     }
 
     @Transactional
-    public HouseResponseDto.HouseRes addHouse(
-            HouseRequestDto.HouseAdd dto,
-            MultipartFile thumbnailImage, List<MultipartFile> houseImages,
-            User user) {
+    public HouseResponseDto.HouseRes addHouse(HouseRequestDto.HouseAdd dto, User user) {
 
+        System.out.println(dto.getThumbnailImage());
+        System.out.println(dto.getHouseImages());
         List<Tag> tags = tagRepository.findByIdIn(dto.getTagIds());
 
-        String thumbnailImageURL = s3Service.uploadSingle(thumbnailImage);
-        List<String> houseImageURLs = s3Service.upload(houseImages);
+
+        String thumbnailImageURL = null;
+
+        if (dto.getThumbnailImage() != null) {
+            thumbnailImageURL = s3Service.uploadSingle(dto.getThumbnailImage());
+        }
+
+        List<String> houseImageURLs = new ArrayList<>();
+
+        if (dto.getHouseImages() != null && !dto.getHouseImages().isEmpty()) {
+            houseImageURLs = s3Service.upload(dto.getHouseImages());
+        }
+
+
 
         House house = House.builder().thumbnailUrl(thumbnailImageURL).dto(dto).ownerId(user.getId()).build();
 
