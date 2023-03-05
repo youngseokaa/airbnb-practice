@@ -1,5 +1,6 @@
 package com.example.airbnbpractice.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ public class TagType extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Schema(example = "", description = "")
     private String name;
 
     @OneToMany(mappedBy = "tagType", cascade = CascadeType.ALL, orphanRemoval = true)
