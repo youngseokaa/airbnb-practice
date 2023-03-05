@@ -59,8 +59,6 @@ public class HouseService {
     @Transactional
     public HouseResponseDto.HouseRes addHouse(HouseRequestDto.HouseAdd dto, User user) {
 
-        System.out.println(dto.getThumbnailImage());
-        System.out.println(dto.getHouseImages());
         List<Tag> tags = tagRepository.findByIdIn(dto.getTagIds());
 
 
@@ -105,6 +103,35 @@ public class HouseService {
         }
 
         house.update(dto);
+
+        // 썸네일 등록
+        if (dto.getThumbnailImage() != null) {
+            String thumbnailImageURL = s3Service.uploadSingle(dto.getThumbnailImage());
+            house.setThumbnailUrl(thumbnailImageURL);
+        }
+
+
+        // 이미지 목록 등록
+        if (dto.getHouseImages() != null && !dto.getHouseImages().isEmpty()) {
+            List<String> houseImageURLs = s3Service.upload(dto.getHouseImages());
+
+            house.getHouseImages().clear();
+            for (String houseImageURL : houseImageURLs) {
+                house.addHouseImage(HouseImage.builder().house(house).imageURL(houseImageURL).build());
+            }
+        }
+
+        //태그 등록
+        if (dto.getTagIds() != null && !dto.getTagIds().isEmpty()) {
+            List<Tag> tags = tagRepository.findByIdIn(dto.getTagIds());
+            if (!tags.isEmpty()) {
+                house.getHouseTags().clear();
+                for (Tag tag : tags) {
+                    house.addHouseTag(HouseTag.builder().house(house).tag(tag).build());
+                }
+            }
+
+        }
 
         return HouseResponseDto.HouseRes.noOwnerOf(house);
     }

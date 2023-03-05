@@ -67,10 +67,10 @@ public class HouseController {
         return ResponseDto.of(HttpStatus.OK, "등록 성공", res);
     }
 
-    @PutMapping(value = "/{houseId}")
+    @PutMapping(value = "/{houseId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseDto<HouseResponseDto.HouseRes> updateHouse(
             @PathVariable Long houseId,
-            @RequestBody HouseRequestDto.HouseUpdate dto,
+            @ModelAttribute HouseRequestDto.HouseUpdate dto,
             @Parameter(hidden = true)  @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
 
