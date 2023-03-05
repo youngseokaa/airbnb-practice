@@ -1,35 +1,39 @@
 package com.example.airbnbpractice.entity;
 
 
+import com.example.airbnbpractice.dto.ReservationRequestDto;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
-@Entity(name = "reportReservations")
+@Entity(name = "reservations")
 @Getter
 @NoArgsConstructor
 public class Reservation extends Timestamped {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date startDate;
-    private Date endDate;
+    private LocalDate checkin;
+    private LocalDate checkout;
     private Integer peopleCount;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", insertable = false, updatable = false)
     private User user;
 
-    @Column(name = "user_id")
-    private Long userId;
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "house_id", insertable = false, updatable = false)
     private House house;
 
-    @Column(name = "house_id")
-    private Long houseId;
+    @Builder
+    public Reservation(Long id, LocalDate checkin, LocalDate checkout, Integer peopleCount, User user, House house) {
+        this.id = id;
+        this.checkin = checkin;
+        this.checkout = checkout;
+        this.peopleCount = peopleCount;
+        this.user = user;
+        this.house = house;
+    }
 }
