@@ -26,11 +26,11 @@ public class TagTypeController {
         TagTypeResponseDto trd = tagTypeService.addTagType(tagTypeRequestDto);
         return ResponseDto.of(HttpStatus.OK,"태그 타입 등록에 성공하였습니다",trd);
     }
-
-    @GetMapping("/tagtype")
-    public ResponseDto<List<TagTypeReadDto>> readTagType(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        TagTypeResponseDto trd = tagTypeService.readTagType();
-    }
+//
+//    @GetMapping("/tagtype")
+//    public ResponseDto<List<TagTypeReadDto>> readTagType(@AuthenticationPrincipal UserDetailsImpl userDetails){
+//        TagTypeResponseDto trd = tagTypeService.readTagType();
+//    }
 
     @PutMapping("/tagtype/{tagtypeId}")
     @Secured(UserRoleEnum.Authority.ADMIN)

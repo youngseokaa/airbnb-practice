@@ -30,11 +30,11 @@ public class TagTypeService {
     }
 
 
-    public List<TagTypeReadDto> readTagType() {
-         List<TagType> tagTypes = tagTypeRepository.findAll();
-         List<TagTypeReadDto> tagTypeReadDtos = new ArrayList<>();
-
-    }
+//    public List<TagTypeReadDto> readTagType() {
+//         List<TagType> tagTypes = tagTypeRepository.findAll();
+//         List<TagTypeReadDto> tagTypeReadDtos = new ArrayList<>();
+//
+//    }
 
 
     public TagTypeResponseDto putTagType(TagTypeRequestDto tagTypeRequestDto,Long tagTypeId) {
