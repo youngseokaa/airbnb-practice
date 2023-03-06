@@ -15,14 +15,25 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import static com.example.airbnbpractice.common.dto.ErrorMessage.NO_USER;
 
 @Service
 @RequiredArgsConstructor
-public class TagTypeService {
+public class TagService {
 
     private final TagTypeRepository tagTypeRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
+
+    @Transactional
+    public TagResponseDto addTag(Long tagTypeId, TagRequestDto tagRequestDto) {
+        TagType tagType = tagTypeRepository.findById(tagTypeId).orElseThrow(()-> CustomClientException.of(ErrorMessage.NULL_TAGTYPE));
+        Tag tag = tagRepository.save(new Tag(tagRequestDto, tagType));
+        return TagResponseDto.of(tag);
+    }
+
     @Transactional
     public TagTypeResponseDto addTagType(TagTypeRequestDto tagTypeRequestDto) {
         TagType tagType = tagTypeRepository.save(new TagType(tagTypeRequestDto));
