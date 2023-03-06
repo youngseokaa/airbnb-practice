@@ -25,4 +25,8 @@ public class TagType extends Timestamped {
     public TagType (TagTypeRequestDto tagTypeRequestDto){
         this.name = tagTypeRequestDto.getName();
     }
+
+    public void update(TagTypeRequestDto tagTypeRequestDto) {
+        this.name = tagTypeRequestDto.getName();
+    }
 }

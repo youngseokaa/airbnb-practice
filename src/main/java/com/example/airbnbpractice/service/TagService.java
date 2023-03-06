@@ -1,6 +1,7 @@
 package com.example.airbnbpractice.service;
 
 import com.example.airbnbpractice.common.CustomClientException;
+import com.example.airbnbpractice.common.dto.ErrorMessage;
 import com.example.airbnbpractice.common.security.UserDetailsImpl;
 import com.example.airbnbpractice.dto.TagTypeReadDto;
 import com.example.airbnbpractice.dto.TagTypeRequestDto;
@@ -36,9 +37,26 @@ public class TagService {
     }
 
 
-    public TagTypeResponseDto readTagType() {
+    public List<TagTypeReadDto> readTagType() {
          List<TagType> tagTypes = tagTypeRepository.findAll();
          List<TagTypeReadDto> tagTypeReadDtos = new ArrayList<>();
 
+    }
+
+
+    public TagTypeResponseDto putTagType(TagTypeRequestDto tagTypeRequestDto,Long tagTypeId) {
+        TagType tagType = tagTypeRepository.findById(tagTypeId).orElseThrow(
+                ()->  CustomClientException.of(ErrorMessage.NO_TAGTYPE)
+        );
+        tagType.update(tagTypeRequestDto);
+        return TagTypeResponseDto.of(tagType);
+    }
+
+
+    public void deleteTagType(Long tagTypeId) {
+        TagType tagType = tagTypeRepository.findById(tagTypeId).orElseThrow(
+                ()->  CustomClientException.of(ErrorMessage.DELETE_REJECT)
+        );
+        tagTypeRepository.delete(tagType);
     }
 }
