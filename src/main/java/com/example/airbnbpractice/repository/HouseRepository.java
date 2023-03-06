@@ -14,8 +14,7 @@ public interface HouseRepository extends JpaRepository<House, Long> {
 
     List<House> findByWishHouses_UserId(Long userId);
 
-
-
+    Optional<House> findHouseByIdAndOwnerId(Long houseId, Long userId);
 
     @Query("SELECT h FROM houses h WHERE (:adminDistrict IS NULL " +
             "OR :adminDistrict = '' OR h.adminDistrict = :adminDistrict) " +

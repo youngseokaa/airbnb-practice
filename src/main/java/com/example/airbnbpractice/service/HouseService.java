@@ -182,5 +182,13 @@ public class HouseService {
 
         return houses.stream().map(v -> HouseResponseDto.HouseRes.of(v, user.getId())).toList();
     }
+
+    @Transactional
+    public void removeHouse(Long houseId, User user) {
+        House house = houseRepository.findHouseByIdAndOwnerId(houseId, user.getId()).orElseThrow(
+                () -> CustomClientException.of(ErrorMessage.DELETE_REJECT)
+        );
+        houseRepository.delete(house);
+    }
 }
 

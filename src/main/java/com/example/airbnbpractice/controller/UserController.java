@@ -27,7 +27,8 @@ public class UserController {
     //회원가입
     @PostMapping("/api/users/signup")
     @SecurityRequirements()
-    @Operation(summary = "회원가입하기", description = "회원가입하기 이메일,닉네임 중복 불가")
+    @Operation(summary = "회원가입하기", description = "회원가입하기 이메일,닉네임 중복 불가." +
+            "isAdmin은 필수, isAdmin이 true면 adminToken을 확인")
     public ResponseDto<UserResponseDto> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
          UserResponseDto userResponseDto = userService.signup(signupRequestDto);
         return ResponseDto.of(HttpStatus.OK,"회원가입에 성공하였습니다",userResponseDto);
@@ -36,6 +37,7 @@ public class UserController {
     // 이메일 중복 확인
     @GetMapping("/api/users/email/duplicate")
     @SecurityRequirements()
+    @Operation(description = "이메일 중복 체크")
     public ResponseDto<CheckResponseDto> checkEmail(@RequestParam String email){
        CheckResponseDto checkResponseDto= userService.checkEmail(email);
         return ResponseDto.of(HttpStatus.OK,"중복이 확인되었습니다",checkResponseDto);
@@ -44,6 +46,7 @@ public class UserController {
     // 닉네임 중복 확인
     @GetMapping("/api/users/nickName/duplicate")
     @SecurityRequirements()
+    @Operation(description = "닉네임 중복 체크")
     public ResponseDto<CheckResponseDto> checkNickname(@RequestParam String nickName){
         CheckResponseDto checkResponseDto= userService.checkNickname(nickName);
         return ResponseDto.of(HttpStatus.OK,"중복이 확인되었습니다",checkResponseDto);
