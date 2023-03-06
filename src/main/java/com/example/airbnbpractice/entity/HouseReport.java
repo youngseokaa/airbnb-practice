@@ -1,5 +1,6 @@
 package com.example.airbnbpractice.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,8 +14,10 @@ public class HouseReport extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Schema(example = "사진에서 보여준 풍경과 다릅니다", description = "신고할 내역을 입력합니다")
     private String message;
 
+    @Schema(description = "처리완료 여부")
     private Boolean isDone = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
