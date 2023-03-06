@@ -39,12 +39,15 @@ public class TagTypeService {
 //    public List<TagTypeReadDto> readTagType() {
 //        List<TagType> tagTypes = tagTypeRepository.findAll();
 //        List<TagTypeReadDto> tagTypeReadDtos = new ArrayList<>();
-////         for(int i = 0; tag)
+//        for (TagType tagType : tagTypes) {
+//            tagTypeReadDtos.add(new TagTypeReadDto(tagType));
+//        }
+//        return tagTypeReadDtos;
 //    }
 
     @Transactional
-    public TagTypeResponseDto putTagType(TagTypeRequestDto tagTypeRequestDto,Long tagTypeId) {
-        TagType tagType = tagTypeRepository.findById(tagTypeId).orElseThrow(
+    public TagTypeResponseDto putTagType(TagTypeRequestDto tagTypeRequestDto,Long tagtypeId) {
+        TagType tagType = tagTypeRepository.findById(tagtypeId).orElseThrow(
                 ()->  CustomClientException.of(ErrorMessage.NO_TAGTYPE)
         );
         tagType.update(tagTypeRequestDto);
@@ -52,8 +55,8 @@ public class TagTypeService {
     }
 
     @Transactional
-    public void deleteTagType(Long tagTypeId) {
-        TagType tagType = tagTypeRepository.findById(tagTypeId).orElseThrow(
+    public void deleteTagType(Long tagtypeId) {
+        TagType tagType = tagTypeRepository.findById(tagtypeId).orElseThrow(
                 ()->  CustomClientException.of(ErrorMessage.DELETE_REJECT)
         );
         tagTypeRepository.delete(tagType);

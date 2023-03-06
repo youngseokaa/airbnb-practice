@@ -24,4 +24,6 @@ public class TagService {
         Tag tag = tagRepository.save(new Tag(tagRequestDto, tagType));
         return TagResponseDto.of(tag);
     }
+
+
 }
