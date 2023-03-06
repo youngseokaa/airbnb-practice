@@ -104,8 +104,9 @@ public class HouseController {
 
 
     @GetMapping("/{houseId}")
+    @SecurityRequirements()
     @Operation(description = "숙소 상세 조회", summary = "숙소 하나의 정보를 상세조회합니다")
-    public ResponseDto<HouseResponseDto.HouseRes> getHouse(@PathVariable Long houseId, @RequestParam Long userId) {
+    public ResponseDto<HouseResponseDto.HouseRes> getHouse(@PathVariable Long houseId, @RequestParam(required = false) Long userId) {
 
         return ResponseDto.of(HttpStatus.OK, "조회 완료", houseService.getHouse(houseId, userId));
     }
