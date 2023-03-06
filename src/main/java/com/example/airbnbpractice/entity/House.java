@@ -40,6 +40,9 @@ public class House extends Timestamped {
     private Set<HouseReport> reports;
 
     @OneToMany(mappedBy = "house", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Reservation> reservations;
+
+    @OneToMany(mappedBy = "house", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<HouseTag> houseTags;
 
     @ManyToOne(fetch = FetchType.LAZY)

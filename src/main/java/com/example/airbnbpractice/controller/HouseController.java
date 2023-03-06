@@ -31,7 +31,7 @@ public class HouseController {
 
     @GetMapping()
     @SecurityRequirements()
-    @Operation(description = "숙소 검색", summary = "최초 조회도 포함. 소속행정구역(특별시, 광역시는 도에서 분리)," +
+    @Operation(summary = "숙소 검색", description = "최초 조회도 포함. 소속행정구역(특별시, 광역시는 도에서 분리)," +
             "희망 가격대 포함여부, 희망 기간 예약가능 여부를 검토하여 페이징처리하여 반환합니다.")
     public ResponseDto<List<HouseResponseDto.HouseRes>> getHouses(
             @RequestParam(required = false) String adminDistrict,
@@ -53,7 +53,7 @@ public class HouseController {
     }
 
     @PostMapping("/wish/{houseId}")
-    @Operation(description = "좋아요(찜, 위시) 추가/제거", summary = "해당 숙소에 대한 사용자의 좋아요 선택 여부를 변경합니다." +
+    @Operation(summary = "좋아요(찜, 위시) 추가/제거", description = "해당 숙소에 대한 사용자의 좋아요 선택 여부를 변경합니다." +
             "좋아요 표시된 숙소는 해당 사용자의 마이위시리스트에 추가됩니다.")
     public ResponseDto<Boolean> toggleWish(@PathVariable Long houseId,
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails
@@ -69,7 +69,7 @@ public class HouseController {
 
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
-    @Operation(description = "숙소 등록", summary = "숙소를 추가합니다." +
+    @Operation(summary = "숙소 등록", description = "숙소를 추가합니다." +
             "행정구역, 상세주소, 숙소 정보(설명), 수용인원 수, 숙소 1박 가격, 편의시설, 썸네일사진과 세부사진 정보와 숙소등록유저정보를 저장합니다.")
     public ResponseDto<HouseResponseDto.HouseRes> addHouse(
             @ModelAttribute HouseRequestDto.HouseAdd dto,
@@ -81,7 +81,7 @@ public class HouseController {
     }
 
     @PutMapping(value = "/{houseId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(description = "숙소 수정", summary = "기존에 등록한 숙소의 정보를 수정합니다")
+    @Operation(summary = "숙소 수정", description = "기존에 등록한 숙소의 정보를 수정합니다")
     public ResponseDto<HouseResponseDto.HouseRes> updateHouse(
             @PathVariable Long houseId,
             @ModelAttribute HouseRequestDto.HouseUpdate dto,
@@ -94,7 +94,7 @@ public class HouseController {
 
 
     @GetMapping("/wish")
-    @Operation(description = "마이위시리스트 조회", summary = "현재 이용중인 사용자가 좋아요(찜, 위시) 체크해 둔 숙소들을 보여줍니다")
+    @Operation(summary = "마이위시리스트 조회", description = "현재 이용중인 사용자가 좋아요(찜, 위시) 체크해 둔 숙소들을 보여줍니다")
     public ResponseDto<List<HouseResponseDto.HouseRes>> wishHouses(
             @Parameter(hidden = true)  @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
@@ -104,16 +104,16 @@ public class HouseController {
 
 
     @GetMapping("/{houseId}")
-    @Operation(description = "숙소 상세 조회", summary = "숙소 하나의 정보를 상세조회합니다")
+    @Operation(summary = "숙소 상세 조회", description = "숙소 하나의 정보를 상세조회합니다")
     public ResponseDto<HouseResponseDto.HouseRes> getHouse(@PathVariable Long houseId, @RequestParam Long userId) {
 
         return ResponseDto.of(HttpStatus.OK, "조회 완료", houseService.getHouse(houseId, userId));
     }
 
     @GetMapping(value = "/registration")
-    @Operation(description = "내가 등록한 숙소 조회", summary = "사용자가 직접 관리하고 등록한 숙소들을 보여줍니다")
+    @Operation(summary = "내가 등록한 숙소 조회", description = "사용자가 직접 관리하고 등록한 숙소들을 보여줍니다")
     public ResponseDto<List<HouseResponseDto.HouseRes>> registration(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails){
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<HouseResponseDto.HouseRes> res = houseService.registration(userDetails);
         return ResponseDto.of(HttpStatus.OK, "수정 성공", res);
     }

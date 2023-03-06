@@ -4,6 +4,9 @@ import com.example.airbnbpractice.entity.House;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNull;
+import org.springframework.lang.Nullable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,4 +32,5 @@ public interface HouseRepository extends JpaRepository<House, Long> {
     List<House> searchHomes(String adminDistrict, Integer peopleCount,
                             Integer minPrice, Integer maxPrice,
                             LocalDate startDate, LocalDate endDate, Pageable pageable);
+
 }
