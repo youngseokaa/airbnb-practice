@@ -17,7 +17,7 @@ import java.util.List;
 
 @Tag(name = "TagType")
 @RestController
-@RequestMapping("/api/tagType")
+@RequestMapping("/api/tagTypes")
 @RequiredArgsConstructor
 public class TagTypeController {
 
@@ -36,6 +36,13 @@ public class TagTypeController {
         List<TagTypeReadDto> trd = tagTypeService.readTagType();
         return ResponseDto.of(HttpStatus.OK,"태그 타입을 읽어 오는것에 성공 하였습니다",trd);
     }
+
+    @GetMapping("/byHome")
+    @SecurityRequirements()
+    ResponseDto<List<TagTypeReadDto>> getTagTypesByHome(@RequestParam Long homeId) {
+        return ResponseDto.of(HttpStatus.OK, "조회 성공", tagTypeService.getTagTypeByHouse(homeId));
+    }
+
 
     @PutMapping("/{tagTypeId}")
     @Secured(UserRoleEnum.Authority.ADMIN)
