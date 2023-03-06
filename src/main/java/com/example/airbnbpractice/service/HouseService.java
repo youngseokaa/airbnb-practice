@@ -185,7 +185,7 @@ public class HouseService {
 
     @Transactional
     public void removeHouse(Long houseId, User user) {
-        House house = houseRepository.findHouseByIdAndoAndOwnerId(houseId, user.getId()).orElseThrow(
+        House house = houseRepository.findHouseByIdAndOwnerId(houseId, user.getId()).orElseThrow(
                 () -> CustomClientException.of(ErrorMessage.DELETE_REJECT)
         );
         houseRepository.delete(house);
