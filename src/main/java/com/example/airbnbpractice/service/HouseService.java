@@ -171,6 +171,7 @@ public class HouseService {
         House house = houseRepository.findById(houseId).orElseThrow(
                 () -> CustomClientException.of(ErrorMessage.NO_HOUSE)
         );
+
         return HouseResponseDto.HouseRes.of(house, userId);
     }
 
