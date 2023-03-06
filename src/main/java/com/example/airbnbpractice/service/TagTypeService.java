@@ -21,18 +21,13 @@ import static com.example.airbnbpractice.common.dto.ErrorMessage.NO_USER;
 
 @Service
 @RequiredArgsConstructor
-public class TagService {
+public class TagTypeService {
 
     private final TagTypeRepository tagTypeRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
 
-    @Transactional
-    public TagResponseDto addTag(Long tagTypeId, TagRequestDto tagRequestDto) {
-        TagType tagType = tagTypeRepository.findById(tagTypeId).orElseThrow(()-> CustomClientException.of(ErrorMessage.NULL_TAGTYPE));
-        Tag tag = tagRepository.save(new Tag(tagRequestDto, tagType));
-        return TagResponseDto.of(tag);
-    }
+
 
     @Transactional
     public TagTypeResponseDto addTagType(TagTypeRequestDto tagTypeRequestDto) {
@@ -40,14 +35,14 @@ public class TagService {
         return TagTypeResponseDto.of(tagType);
     }
 
-
+//    @Transactional
 //    public List<TagTypeReadDto> readTagType() {
-//         List<TagType> tagTypes = tagTypeRepository.findAll();
-//         List<TagTypeReadDto> tagTypeReadDtos = new ArrayList<>();
-//
+//        List<TagType> tagTypes = tagTypeRepository.findAll();
+//        List<TagTypeReadDto> tagTypeReadDtos = new ArrayList<>();
+////         for(int i = 0; tag)
 //    }
 
-
+    @Transactional
     public TagTypeResponseDto putTagType(TagTypeRequestDto tagTypeRequestDto,Long tagTypeId) {
         TagType tagType = tagTypeRepository.findById(tagTypeId).orElseThrow(
                 ()->  CustomClientException.of(ErrorMessage.NO_TAGTYPE)
@@ -56,7 +51,7 @@ public class TagService {
         return TagTypeResponseDto.of(tagType);
     }
 
-
+    @Transactional
     public void deleteTagType(Long tagTypeId) {
         TagType tagType = tagTypeRepository.findById(tagTypeId).orElseThrow(
                 ()->  CustomClientException.of(ErrorMessage.DELETE_REJECT)

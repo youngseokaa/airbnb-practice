@@ -1,5 +1,6 @@
 package com.example.airbnbpractice.entity;
 
+import com.example.airbnbpractice.dto.TagRequestDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,9 @@ public class Tag extends Timestamped {
 
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<HouseTag> houseTags;
+
+    public Tag(TagRequestDto tagRequestDto,TagType tagType){
+        this.name = tagRequestDto.getName();
+        this.tagType = tagType;
+    }
 }
