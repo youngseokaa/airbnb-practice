@@ -26,6 +26,7 @@ public class ReservationService {
         House house = houseRepository.findById(dto.getHouseId()).orElseThrow(
                 () -> CustomClientException.of(ErrorMessage.NO_HOUSE)
         );
+
         Reservation reservation = Reservation.builder()
                 .user(user)
                 .house(house)
