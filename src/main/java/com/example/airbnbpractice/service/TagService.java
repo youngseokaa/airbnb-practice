@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TagService {
@@ -26,6 +28,10 @@ public class TagService {
         String tagImageUrl = s3Service.uploadSingle(tagRequestDto.getImageFile());
         Tag tag = tagRepository.save(new Tag(tagRequestDto, tagImageUrl, tagType));
         return TagResponseDto.of(tag);
+    }
+
+    public List<TagResponseDto> getTags() {
+        return tagRepository.findAll().stream().map(TagResponseDto::of).toList();
     }
 
 

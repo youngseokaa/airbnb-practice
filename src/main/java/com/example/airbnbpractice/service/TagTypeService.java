@@ -5,7 +5,9 @@ import com.example.airbnbpractice.common.dto.ErrorMessage;
 import com.example.airbnbpractice.dto.TagTypeReadDto;
 import com.example.airbnbpractice.dto.TagTypeRequestDto;
 import com.example.airbnbpractice.dto.TagTypeResponseDto;
+import com.example.airbnbpractice.entity.House;
 import com.example.airbnbpractice.entity.TagType;
+import com.example.airbnbpractice.repository.HouseRepository;
 import com.example.airbnbpractice.repository.TagRepository;
 import com.example.airbnbpractice.repository.TagTypeRepository;
 import com.example.airbnbpractice.repository.UserRepository;
@@ -24,6 +26,7 @@ import static com.example.airbnbpractice.common.dto.ErrorMessage.NO_USER;
 public class TagTypeService {
 
     private final TagTypeRepository tagTypeRepository;
+    private final HouseRepository houseRepository;
 
 
 
@@ -33,14 +36,16 @@ public class TagTypeService {
         return TagTypeResponseDto.of(tagType);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public List<TagTypeReadDto> readTagType() {
-        List<TagType> tagTypes = tagTypeRepository.findAll();
-        List<TagTypeReadDto> tagTypeReadDtos = new ArrayList<>();
-        for (TagType tagType : tagTypes) {
-            tagTypeReadDtos.add(new TagTypeReadDto(tagType));
-        }
-        return tagTypeReadDtos;
+        return tagTypeRepository.findAll().stream().map(TagTypeReadDto::of).toList();
+    }
+
+    public List<TagTypeReadDto> getTagTypeByHouse(Long houseId) {
+        House house = houseRepository.findById(houseId).orElseThrow(
+                () -> CustomClientException.of(ErrorMessage.NO_HOUSE)
+        );
+        return tagTypeRepository.findByTags_HouseTags_House(house).stream().map(TagTypeReadDto::of).toList();
     }
 
     @Transactional
