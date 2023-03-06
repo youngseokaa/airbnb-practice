@@ -47,9 +47,9 @@ public class TagService {
     }
 
 
-    public TagTypeResponseDto readTagType() {
-         List<TagType> tagTypes = tagTypeRepository.findAll();
-         List<TagTypeReadDto> tagTypeReadDtos = new ArrayList<>();
-
-    }
+//    public TagTypeResponseDto readTagType() {
+//         List<TagType> tagTypes = tagTypeRepository.findAll();
+//         List<TagTypeReadDto> tagTypeReadDtos = new ArrayList<>();
+//
+//    }
 }
