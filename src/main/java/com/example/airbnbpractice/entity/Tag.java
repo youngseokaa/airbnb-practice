@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity(name = "tags")
 @Getter
@@ -22,4 +23,7 @@ public class Tag extends Timestamped {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private TagType tagType;
+
+    @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<HouseTag> houseTags;
 }

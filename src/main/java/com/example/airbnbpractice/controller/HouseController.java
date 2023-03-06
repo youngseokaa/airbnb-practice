@@ -125,4 +125,6 @@ public class HouseController {
         houseService.removeHouse(houseId, userDetails.getUser());
         return ResponseDto.of(HttpStatus.OK, "삭제 성공");
     }
+
+
 }
