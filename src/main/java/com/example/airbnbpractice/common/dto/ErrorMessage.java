@@ -20,7 +20,8 @@ public enum ErrorMessage {
     NOT_MATCH_PASSWORD("비밀번호가 일치하지 않습니다."),
     TOKEN_EXPIRED("토큰이 만료되었습니다."),
     EXIST_NICKNAME("이미존재하는 닉네임 입니다"),
-    NO_TAGTYPE("등록된 태그가 존재하지 않습니다"),
+    NO_TAG("등록된 태그가 존재하지 않습니다"),
+    NO_TAGTYPE("등록된 태그타입이 존재하지 않습니다"),
     EXIST_EMAIL("이미존재하는 이메일입니다");
 
     private final String description;

@@ -24,4 +24,19 @@ public class TagService {
         Tag tag = tagRepository.save(new Tag(tagRequestDto, tagType));
         return TagResponseDto.of(tag);
     }
+
+    @Transactional
+    public TagResponseDto updateTag(Long tagId, TagRequestDto tagRequestDto) {
+        tagTypeRepository.findById(tagRequestDto.getTagType().getId()).orElseThrow(()-> CustomClientException.of(ErrorMessage.NO_TAGTYPE));
+        Tag tag = tagRepository.findById(tagId).orElseThrow(()-> CustomClientException.of(ErrorMessage.NO_TAG));
+        tag.update(tagRequestDto);
+        return TagResponseDto.of(tag);
+    }
+
+
+    @Transactional
+    public void deleteTag(Long tagId) {
+        Tag tag = tagRepository.findById(tagId).orElseThrow(()-> CustomClientException.of(ErrorMessage.NO_TAG));
+        tagRepository.delete(tag);
+    }
 }

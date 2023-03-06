@@ -32,4 +32,10 @@ public class Tag extends Timestamped {
         this.name = tagRequestDto.getName();
         this.tagType = tagType;
     }
+
+    public void update(TagRequestDto tagRequestDto){
+        this.name = tagRequestDto.getName();
+        this.imageURL = tagRequestDto.getImageURL();
+        this.tagType = tagRequestDto.getTagType();
+    }
 }

@@ -28,10 +28,17 @@ public class TagController {
         TagResponseDto td = tagService.addTag(tagTypeId, tagRequestDto);
         return ResponseDto.of(HttpStatus.OK,"태그 등록에 성공하였습니다",td);
     }
+    @PutMapping("/tag/{tagId}")
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    public ResponseDto<TagResponseDto> updateTag(@PathVariable Long tagId, @RequestBody TagRequestDto tagRequestDto){
+        TagResponseDto td = tagService.updateTag(tagId, tagRequestDto);
+        return ResponseDto.of(HttpStatus.OK,"태그 수정에 성공하였습니다",td);
+    }
+    @DeleteMapping("/tag/{tagId}")
+    @Secured(UserRoleEnum.Authority.ADMIN)
+    public ResponseDto deleteTag(@PathVariable Long tagId){
+        tagService.deleteTag(tagId);
+        return ResponseDto.of(HttpStatus.OK,"태그 삭제에 성공하였습니다");
+    }
 
-
-//    @GetMapping("/tagtype")
-//    public ResponseDto<TagTypeResponseDto> readTagType(@AuthenticationPrincipal UserDetailsImpl userDetails){
-//        TagTypeResponseDto trd = tagService.readTagType();
-//    }
 }
