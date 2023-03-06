@@ -4,6 +4,7 @@ import com.example.airbnbpractice.common.dto.ResponseDto;
 import com.example.airbnbpractice.common.security.UserDetailsImpl;
 import com.example.airbnbpractice.dto.HouseRequestDto;
 import com.example.airbnbpractice.dto.HouseResponseDto;
+import com.example.airbnbpractice.entity.UserRoleEnum;
 import com.example.airbnbpractice.service.HouseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -104,8 +106,9 @@ public class HouseController {
 
 
     @GetMapping("/{houseId}")
+    @SecurityRequirements()
     @Operation(description = "숙소 상세 조회", summary = "숙소 하나의 정보를 상세조회합니다")
-    public ResponseDto<HouseResponseDto.HouseRes> getHouse(@PathVariable Long houseId, @RequestParam Long userId) {
+    public ResponseDto<HouseResponseDto.HouseRes> getHouse(@PathVariable Long houseId, @RequestParam(required = false) Long userId) {
 
         return ResponseDto.of(HttpStatus.OK, "조회 완료", houseService.getHouse(houseId, userId));
     }
@@ -113,7 +116,7 @@ public class HouseController {
     @GetMapping(value = "/registration")
     @Operation(description = "내가 등록한 숙소 조회", summary = "사용자가 직접 관리하고 등록한 숙소들을 보여줍니다")
     public ResponseDto<List<HouseResponseDto.HouseRes>> registration(
-            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails){
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails) {
         List<HouseResponseDto.HouseRes> res = houseService.registration(userDetails);
         return ResponseDto.of(HttpStatus.OK, "수정 성공", res);
     }
