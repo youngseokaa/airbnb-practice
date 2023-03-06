@@ -1,5 +1,7 @@
 package com.example.airbnbpractice.entity;
 
+import com.example.airbnbpractice.dto.TagRequestDto;
+import com.example.airbnbpractice.dto.TagTypeRequestDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,13 +19,16 @@ public class Tag extends Timestamped {
     @Schema(example = "", description = "")
     private String name;
     @Schema(example = "", description = "")
-
     private String imageURL;
-
 
     @ManyToOne(fetch = FetchType.LAZY)
     private TagType tagType;
 
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<HouseTag> houseTags;
+
+    public Tag (TagRequestDto tagRequestDto, TagType tagType){
+        this.name = tagRequestDto.getName();
+        this.tagType = tagType;
+    }
 }

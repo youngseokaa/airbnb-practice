@@ -1,7 +1,10 @@
 package com.example.airbnbpractice.service;
 
 import com.example.airbnbpractice.common.CustomClientException;
+import com.example.airbnbpractice.common.dto.ErrorMessage;
 import com.example.airbnbpractice.common.security.UserDetailsImpl;
+import com.example.airbnbpractice.dto.TagRequestDto;
+import com.example.airbnbpractice.dto.TagResponseDto;
 import com.example.airbnbpractice.dto.TagTypeReadDto;
 import com.example.airbnbpractice.dto.TagTypeRequestDto;
 import com.example.airbnbpractice.dto.TagTypeResponseDto;
@@ -29,6 +32,14 @@ public class TagService {
     private final TagTypeRepository tagTypeRepository;
     private final UserRepository userRepository;
     private final TagRepository tagRepository;
+
+    @Transactional
+    public TagResponseDto addTag(Long tagTypeId, TagRequestDto tagRequestDto) {
+        TagType tagType = tagTypeRepository.findById(tagTypeId).orElseThrow(()-> CustomClientException.of(ErrorMessage.NULL_TAGTYPE));
+        Tag tag = tagRepository.save(new Tag(tagRequestDto, tagType));
+        return TagResponseDto.of(tag);
+    }
+
     @Transactional
     public TagTypeResponseDto addTagType(TagTypeRequestDto tagTypeRequestDto) {
         TagType tagType = tagTypeRepository.save(new TagType(tagTypeRequestDto));
