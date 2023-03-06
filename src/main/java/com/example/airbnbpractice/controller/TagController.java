@@ -12,6 +12,7 @@ import com.example.airbnbpractice.service.TagService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +25,10 @@ public class TagController {
 
     private final TagService tagService;
 
-    @PostMapping("/{tagTypeId}")
+    @PostMapping(value = "/{tagTypeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Secured(UserRoleEnum.Authority.ADMIN)
-    public ResponseDto<TagResponseDto> addTag(@PathVariable Long tagTypeId, @RequestBody TagRequestDto tagRequestDto){
+    public ResponseDto<TagResponseDto> addTag(@PathVariable Long tagTypeId,
+                                              @ModelAttribute TagRequestDto tagRequestDto){
         TagResponseDto td = tagService.addTag(tagTypeId, tagRequestDto);
         return ResponseDto.of(HttpStatus.OK,"태그 등록에 성공하였습니다",td);
     }

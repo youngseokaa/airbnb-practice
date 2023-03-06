@@ -5,6 +5,8 @@ import com.example.airbnbpractice.entity.TagType;
 import com.example.airbnbpractice.entity.User;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.java.Log;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 
@@ -12,6 +14,5 @@ import javax.persistence.*;
 @Setter
 public class TagRequestDto {
     private String name;
-    private String imageURL;
-    private TagType tagType;
+    private MultipartFile imageFile;
 }

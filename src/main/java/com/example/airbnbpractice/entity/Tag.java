@@ -28,8 +28,9 @@ public class Tag extends Timestamped {
     @OneToMany(mappedBy = "tag", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<HouseTag> houseTags;
 
-    public Tag(TagRequestDto tagRequestDto,TagType tagType){
+    public Tag(TagRequestDto tagRequestDto, String imageURL, TagType tagType){
         this.name = tagRequestDto.getName();
+        this.imageURL = imageURL;
         this.tagType = tagType;
     }
 }
