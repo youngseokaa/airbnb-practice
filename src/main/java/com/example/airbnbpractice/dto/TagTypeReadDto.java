@@ -15,7 +15,7 @@ public class TagTypeReadDto {
     private Long id;
     private String name;
     private String imageURL;
-    private List<TagResponseDto> tagResponseDtos;
+    private List<TagResponseDto> tags;
 
     public TagTypeReadDto(TagType tagType){
         this.id = tagType.getId();
@@ -25,6 +25,6 @@ public class TagTypeReadDto {
         for (Tag tags : tagType.getTags()) {
             tagResponseDtos.add(TagResponseDto.of(tags));
         }
-        this.tagResponseDtos =tagResponseDtos;
+        this.tags = tagResponseDtos;
     }
 }

@@ -54,6 +54,7 @@ public class SecurityConfig {
                 .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .antMatchers("/api/users/signup", "/api/users/login","/api/users/email/**","/api/users/nickName/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/houses").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/tagType").permitAll()
                 .antMatchers("/api/tag/**").permitAll()
                 .antMatchers("/api/**").authenticated()
 

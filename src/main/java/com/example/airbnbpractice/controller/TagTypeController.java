@@ -5,6 +5,7 @@ import com.example.airbnbpractice.common.dto.ResponseDto;
 import com.example.airbnbpractice.dto.*;
 import com.example.airbnbpractice.entity.UserRoleEnum;
 import com.example.airbnbpractice.service.TagTypeService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,15 +23,15 @@ public class TagTypeController {
 
     private final TagTypeService tagTypeService;
 
-    @PostMapping("/")
+    @PostMapping
     @Secured(UserRoleEnum.Authority.ADMIN)
     public ResponseDto<TagTypeResponseDto> addTagType(@RequestBody TagTypeRequestDto tagTypeRequestDto){
         TagTypeResponseDto trd = tagTypeService.addTagType(tagTypeRequestDto);
         return ResponseDto.of(HttpStatus.OK,"태그 타입 등록에 성공하였습니다",trd);
     }
 
-    @GetMapping("/tagType")
-    @Secured(UserRoleEnum.Authority.ADMIN)
+    @GetMapping
+    @SecurityRequirements()
     public ResponseDto<List<TagTypeReadDto>> readTagType(){
         List<TagTypeReadDto> trd = tagTypeService.readTagType();
         return ResponseDto.of(HttpStatus.OK,"태그 타입을 읽어 오는것에 성공 하였습니다",trd);
