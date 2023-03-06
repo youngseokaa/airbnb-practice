@@ -1,5 +1,6 @@
 package com.example.airbnbpractice.entity;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ public class HouseImage extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Schema(description = "상세 페이지에서 보여줄 세부 사진들입니다")
     private String imageURL;
 
     @ManyToOne(fetch = FetchType.LAZY)

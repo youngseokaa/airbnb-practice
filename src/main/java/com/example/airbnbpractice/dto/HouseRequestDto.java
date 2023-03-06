@@ -34,7 +34,7 @@ public class HouseRequestDto {
         private String detailAddress;
         @NotNull
         @NotBlank
-        @Schema(defaultValue = "숙소 정보")
+        @Schema(defaultValue = "숙소 설명")
         private String content;
         @NotNull
         @NotBlank
@@ -51,9 +51,11 @@ public class HouseRequestDto {
 
         @NotNull
         @NotBlank
+        @Schema(description = "메인화면에서 보는 썸네일과, 상세페이지에서 보여주는 대표사진을 담당합니다")
         private MultipartFile thumbnailImage;
         @NotNull
         @NotBlank
+        @Schema(description = "상세페이지에서 보여주는 세부사진 4장을 담당합니다")
         List<MultipartFile> houseImages;
     }
 
@@ -105,9 +107,13 @@ public class HouseRequestDto {
         private Set<Long> tagIds;
 
         @Nullable
+        @NotBlank
+        @Schema(description = "메인화면에서 보는 썸네일과, 상세페이지에서 보여주는 대표사진을 담당합니다")
         private MultipartFile thumbnailImage;
 
         @Nullable
+        @NotBlank
+        @Schema(description = "상세페이지에서 보여주는 세부사진 4장을 담당합니다")
         List<MultipartFile> houseImages;
     }
 }
