@@ -21,7 +21,7 @@ public class ReservationController {
     private final ReservationService reservationService;
 
     @PostMapping()
-    @Operation(summary = "숙소 예약하기", description = "사용자가 원하는 숙소를 예약합니다")
+    @Operation(description = "숙소 예약하기", summary = "사용자가 원하는 숙소를 예약합니다")
     public ResponseDto<ReservationResponseDto.ReservationRes> addReservation(
             @RequestBody ReservationRequestDto.ReservationAdd dto,
             @Parameter(hidden = true)  @AuthenticationPrincipal UserDetailsImpl userDetails
