@@ -35,15 +35,15 @@ public class TagTypeService {
         return TagTypeResponseDto.of(tagType);
     }
 
-//    @Transactional
-//    public List<TagTypeReadDto> readTagType() {
-//        List<TagType> tagTypes = tagTypeRepository.findAll();
-//        List<TagTypeReadDto> tagTypeReadDtos = new ArrayList<>();
-//        for (TagType tagType : tagTypes) {
-//            tagTypeReadDtos.add(new TagTypeReadDto(tagType));
-//        }
-//        return tagTypeReadDtos;
-//    }
+    @Transactional
+    public List<TagTypeReadDto> readTagType() {
+        List<TagType> tagTypes = tagTypeRepository.findAll();
+        List<TagTypeReadDto> tagTypeReadDtos = new ArrayList<>();
+        for (TagType tagType : tagTypes) {
+            tagTypeReadDtos.add(new TagTypeReadDto(tagType));
+        }
+        return tagTypeReadDtos;
+    }
 
     @Transactional
     public TagTypeResponseDto putTagType(TagTypeRequestDto tagTypeRequestDto,Long tagtypeId) {
