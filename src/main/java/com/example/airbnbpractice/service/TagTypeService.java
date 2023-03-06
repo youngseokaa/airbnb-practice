@@ -34,6 +34,16 @@ public class TagTypeService {
     }
 
     @Transactional
+    public List<TagTypeReadDto> readTagType() {
+        List<TagType> tagTypes = tagTypeRepository.findAll();
+        List<TagTypeReadDto> tagTypeReadDtos = new ArrayList<>();
+        for (TagType tagType : tagTypes) {
+            tagTypeReadDtos.add(new TagTypeReadDto(tagType));
+        }
+        return tagTypeReadDtos;
+    }
+
+    @Transactional
     public TagTypeResponseDto putTagType(TagTypeRequestDto tagTypeRequestDto,Long tagTypeId) {
         TagType tagType = tagTypeRepository.findById(tagTypeId).orElseThrow(
                 ()->  CustomClientException.of(ErrorMessage.NO_TAGTYPE)

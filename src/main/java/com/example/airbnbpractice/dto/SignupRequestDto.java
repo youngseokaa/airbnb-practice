@@ -29,7 +29,7 @@ public class SignupRequestDto {
 
     @NotNull
     @Schema(defaultValue = "false")
-    private Boolean isAdmin = false;
+    private Boolean isAdmin;
 
     private String adminToken = "";
 }
