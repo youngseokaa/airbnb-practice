@@ -20,6 +20,8 @@ public class Reservation extends Timestamped {
     private LocalDate checkin;
     private LocalDate checkout;
     private Integer peopleCount;
+    private Boolean isCanceled;
+    private Integer payAmount;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;

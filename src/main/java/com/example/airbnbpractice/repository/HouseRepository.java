@@ -14,6 +14,8 @@ public interface HouseRepository extends JpaRepository<House, Long> {
 
     List<House> findByWishHouses_UserId(Long userId);
 
+    Optional<House> findHouseByIdAndoAndOwnerId(Long houseId, Long userId);
+
 
 
 

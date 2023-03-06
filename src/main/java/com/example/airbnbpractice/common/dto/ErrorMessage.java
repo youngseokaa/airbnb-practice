@@ -13,6 +13,7 @@ public enum ErrorMessage {
     S3_UPLOAD_ERROR("이미지 업로드 실패"),
     DUPLE_USER("이미 가입된 유저가 있습니다."),
     EDIT_REJECT("수정할 권한이 없습니다."),
+    DELETE_REJECT("삭제할 권한이 없습니다."),
 
     NO_USER("가입된 유저가 없습니다."),
     NO_HOUSE("등록된 숙소가 없습니다."),

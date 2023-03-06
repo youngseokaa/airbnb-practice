@@ -106,4 +106,12 @@ public class HouseController {
         List<HouseResponseDto.HouseRes> res = houseService.registration(userDetails);
         return ResponseDto.of(HttpStatus.OK, "수정 성공", res);
     }
+
+    @DeleteMapping(value = "/{houseId}")
+    public ResponseDto registration(
+            @PathVariable Long houseId,
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetailsImpl userDetails){
+        houseService.removeHouse(houseId, userDetails.getUser());
+        return ResponseDto.of(HttpStatus.OK, "삭제 성공");
+    }
 }
