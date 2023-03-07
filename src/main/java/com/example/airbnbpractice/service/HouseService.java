@@ -14,6 +14,7 @@ import com.example.airbnbpractice.repository.HouseWishRepository;
 import com.example.airbnbpractice.repository.TagRepository;
 import com.example.airbnbpractice.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -39,7 +40,7 @@ public class HouseService {
     public List<HouseResponseDto.HouseRes> getHouses(
             String adminDistrict, Integer peopleCount,
             Integer minPrice, Integer maxPrice,
-            LocalDate startDate, LocalDate endDate,
+            String startDate, String endDate,
              Integer page, Integer size, String sortBy,
             Boolean isAsc, Long userId
     ) {
@@ -49,9 +50,15 @@ public class HouseService {
         Sort sort = Sort.by(direction, "id");
         Pageable pageable = PageRequest.of(page, size, sort);
 
+        LocalDate parseStartDate = (startDate != null && !startDate.isEmpty()) ? LocalDate.parse(startDate) : null;
+        LocalDate parseEndDate = (endDate != null && !endDate.isEmpty()) ? LocalDate.parse(endDate) : null;
+
+        System.out.println(startDate);
+        System.out.println(endDate);
+
         List<House> houses = houseRepository.searchHomes(adminDistrict, peopleCount,
                 minPrice, maxPrice,
-                startDate, endDate, pageable);
+                parseStartDate, parseEndDate, pageable);
 
         return houses.stream().map(v -> HouseResponseDto.HouseRes.of(v, userId)).toList();
     }

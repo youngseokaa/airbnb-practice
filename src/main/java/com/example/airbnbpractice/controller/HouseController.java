@@ -7,16 +7,20 @@ import com.example.airbnbpractice.dto.HouseResponseDto;
 import com.example.airbnbpractice.service.HouseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,22 +38,29 @@ public class HouseController {
     @Operation(description = "숙소 검색", summary = "최초 조회도 포함. 소속행정구역(특별시, 광역시는 도에서 분리)," +
             "희망 가격대 포함여부, 희망 기간 예약가능 여부를 검토하여 페이징처리하여 반환합니다.")
     public ResponseDto<List<HouseResponseDto.HouseRes>> getHouses(
-            @RequestParam(required = false) String adminDistrict,
-            @RequestParam(required = false, defaultValue = "3") Integer peopleCount,
-            @RequestParam(required = false, defaultValue = "0") Integer minPrice,
-            @RequestParam(required = false, defaultValue = "100000") Integer maxPrice,
-            @RequestParam(defaultValue = "2023-03-04") String startDate,
-            @RequestParam(defaultValue = "2023-03-10") String endDate,
-            @RequestParam(defaultValue = "0")  Integer page,
-            @RequestParam(defaultValue = "10") Integer size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "false") Boolean isAsc,
+            @RequestParam(required = false)
+            @Schema(example = "서울특별시",
+                    description = "서울특별시 부산광역시 인천광역시 대구광역시 대전광역시 광주광역시 울산광역시 제주특별시 경기도 강원도 충청남도 충청북도 전라북도 전라남도 경상북도 경상남도")
+            String adminDistrict,
+            @RequestParam(required = false) @Schema(example = "3") Integer peopleCount,
+            @RequestParam(required = false) @Nullable @Schema(example = "0") Integer minPrice,
+            @RequestParam(required = false) @Schema(example = "1000000") Integer maxPrice,
+            @RequestParam(required = false) @Schema(example = "2023-03-04") String startDate,
+            @RequestParam(required = false) @Schema(example = "2023-03-10") String endDate,
+            @RequestParam(defaultValue = "0") @NotNull Integer page,
+            @RequestParam(defaultValue = "10") @NotNull Integer size,
+            @RequestParam(defaultValue = "id") @NotNull String sortBy,
+            @RequestParam(defaultValue = "false") @NotNull Boolean isAsc,
             @RequestParam(required = false) Long userId
     ) {
 
+        System.out.println(peopleCount);
+        System.out.println(maxPrice);
+        System.out.println(minPrice);
+
         return ResponseDto.of(HttpStatus.OK, "등록 성공", houseService.getHouses(
                 adminDistrict, peopleCount, minPrice, maxPrice,
-                LocalDate.parse(startDate), LocalDate.parse(endDate), page, size, sortBy, isAsc, userId));
+                startDate, endDate, page, size, sortBy, isAsc, userId));
     }
 
     @PostMapping("/wish/{houseId}")

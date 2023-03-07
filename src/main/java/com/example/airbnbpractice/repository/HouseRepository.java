@@ -18,14 +18,14 @@ public interface HouseRepository extends JpaRepository<House, Long> {
 
     @Query("SELECT h FROM houses h WHERE (:adminDistrict IS NULL " +
             "OR :adminDistrict = '' OR h.adminDistrict = :adminDistrict) " +
-            "AND (:peopleCount IS NULL OR h.maxPeople >= :peopleCount)" +
+            "AND (:peopleCount IS NULL OR h.maxPeople >= :peopleCount) " +
             "AND (:minPrice IS NULL OR :maxPrice IS NULL " +
-            "OR (h.pricePerDay >= :minPrice AND h.pricePerDay <= :maxPrice))" +
-            "AND NOT EXISTS (" +
+            "OR (h.pricePerDay >= :minPrice AND h.pricePerDay <= :maxPrice)) " +
+            "AND (:startDate IS NULL OR :endDate IS NULL OR NOT EXISTS (" +
             "SELECT r FROM reservations r WHERE r.house.id = h.id AND (" +
             "(:startDate >= r.checkin AND :startDate <= r.checkout) OR " +
             "(:endDate >= r.checkin AND :endDate <= r.checkout) OR " +
-            "(:startDate <= r.checkin AND :endDate >= r.checkout)))")
+            "(:startDate <= r.checkin AND :endDate >= r.checkout))))")
     List<House> searchHomes(String adminDistrict, Integer peopleCount,
                             Integer minPrice, Integer maxPrice,
                             LocalDate startDate, LocalDate endDate, Pageable pageable);
