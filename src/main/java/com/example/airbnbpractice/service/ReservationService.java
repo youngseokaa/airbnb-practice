@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -26,12 +27,22 @@ public class ReservationService {
         House house = houseRepository.findById(dto.getHouseId()).orElseThrow(
                 () -> CustomClientException.of(ErrorMessage.NO_HOUSE)
         );
+
+        if (dto.getPeopleCount() > house.getMaxPeople()) {
+            throw CustomClientException.of(ErrorMessage.OVER_MAX_PEOPLE);
+        }
+
+        Integer diffDays = (int) ChronoUnit.DAYS.between(dto.getCheckin(), dto.getCheckout()) + 1;
+
+        Integer payAmount = dto.getPeopleCount() * house.getPricePerDay() * diffDays;
+
         Reservation reservation = Reservation.builder()
                 .user(user)
                 .house(house)
                 .checkin(dto.getCheckin())
                 .checkout(dto.getCheckout())
                 .peopleCount(dto.getPeopleCount())
+                .payAmount(payAmount)
                 .build();
 
         return ReservationResponseDto.ReservationRes.of(reservationRepository.save(reservation));

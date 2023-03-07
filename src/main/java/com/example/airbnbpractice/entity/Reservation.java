@@ -34,12 +34,14 @@ public class Reservation extends Timestamped {
     private House house;
 
     @Builder
-    public Reservation(Long id, LocalDate checkin, LocalDate checkout, Integer peopleCount, User user, House house) {
+    public Reservation(Long id, LocalDate checkin, LocalDate checkout, Integer payAmount, Boolean isCanceled, Integer peopleCount, User user, House house) {
         this.id = id;
         this.checkin = checkin;
         this.checkout = checkout;
         this.peopleCount = peopleCount;
         this.user = user;
+        this.payAmount = payAmount;
+        this.isCanceled = false;
         this.house = house;
     }
 }

@@ -17,6 +17,7 @@ public enum ErrorMessage {
 
     NO_USER("가입된 유저가 없습니다."),
     NO_HOUSE("등록된 숙소가 없습니다."),
+    OVER_MAX_PEOPLE("최대인원을 초과하였습니다."),
     NOT_MATCH_PASSWORD("비밀번호가 일치하지 않습니다."),
     TOKEN_EXPIRED("토큰이 만료되었습니다."),
     EXIST_NICKNAME("이미존재하는 닉네임 입니다"),
