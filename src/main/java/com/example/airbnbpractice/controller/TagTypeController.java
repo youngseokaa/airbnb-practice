@@ -34,7 +34,7 @@ public class TagTypeController {
 
     @GetMapping
     @SecurityRequirements()
-    @Operation(summary = "태그 타입 등록", description = "태그를 분류하는 태그타입을 추가합니다.")
+    @Operation(summary = "태그 타입 조회", description = "현재까지 등록된 모든 태그타입을 조회합니다.")
     public ResponseDto<List<TagTypeReadDto>> readTagType(){
         List<TagTypeReadDto> trd = tagTypeService.readTagType();
         return ResponseDto.of(HttpStatus.OK,"태그 타입을 읽어 오는것에 성공 하였습니다",trd);
@@ -42,7 +42,7 @@ public class TagTypeController {
 
     @GetMapping("/byHome")
     @SecurityRequirements()
-    @Operation(summary = "태그 타입 등록", description = "태그를 분류하는 태그타입을 추가합니다.")
+    @Operation(summary = "숙소 상세 태그타입 조회", description = "해당 숙소에 등록된 태그타입을 조회합니다.")
     ResponseDto<List<TagTypeReadDto>> getTagTypesByHome(@RequestParam Long homeId) {
         return ResponseDto.of(HttpStatus.OK, "조회 성공", tagTypeService.getTagTypeByHouse(homeId));
     }
