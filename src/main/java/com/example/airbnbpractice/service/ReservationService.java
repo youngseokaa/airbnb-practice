@@ -36,4 +36,12 @@ public class ReservationService {
 
         return ReservationResponseDto.ReservationRes.of(reservationRepository.save(reservation));
     }
+
+    @Transactional
+    public List<ReservationResponseDto.ReservationRes> reservedByUser(User user) {
+
+        return reservationRepository.findByUser_Id(user.getId()).stream().map(ReservationResponseDto.ReservationRes::of).toList();
+    }
+
+
 }
