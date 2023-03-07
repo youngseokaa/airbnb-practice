@@ -28,7 +28,7 @@ public class SignupRequestDto {
     private String nickname;
 
     @NotNull
-    @Schema(defaultValue = "false")
+    @Schema(example = "false")
     private Boolean isAdmin;
 
     private String adminToken = "";

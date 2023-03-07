@@ -87,23 +87,23 @@ public class HouseRequestDto {
     public static class HouseUpdate {
 
         @Nullable
-        @Schema(defaultValue = "서울특별시")
+        @Schema(example = "서울특별시")
         private String adminDistrict;
         @Nullable
-        @Schema(defaultValue = "상세주소")
+        @Schema(example = "상세주소")
         private String detailAddress;
         @Nullable
-        @Schema(defaultValue = "숙소 정보")
+        @Schema(example = "숙소 정보")
         private String content;
         @Nullable
-        @Schema(defaultValue = "10", minimum = "1", maximum = "20")
+        @Schema(example = "10", minimum = "1", maximum = "20")
         private Integer maxPeople;
         @Nullable
-        @Schema(defaultValue = "100000", minimum = "100", maximum = "10000000")
+        @Schema(example = "100000", minimum = "100", maximum = "10000000")
         private Integer pricePerDay;
 
         @Nullable
-        @Schema(defaultValue = "[2,3]")
+        @Schema(example = "[2,3]")
         private Set<Long> tagIds;
 
         @Nullable
