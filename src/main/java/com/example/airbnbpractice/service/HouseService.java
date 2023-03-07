@@ -38,7 +38,7 @@ public class HouseService {
 
     @Transactional(readOnly = true)
     public List<HouseResponseDto.HouseRes> getHouses(
-            String adminDistrict, Integer peopleCount,
+            AdministerEnum adminDistrict, Integer peopleCount,
             Integer minPrice, Integer maxPrice,
             String startDate, String endDate,
              Integer page, Integer size, String sortBy,
@@ -56,7 +56,8 @@ public class HouseService {
         System.out.println(startDate);
         System.out.println(endDate);
 
-        List<House> houses = houseRepository.searchHomes(adminDistrict, peopleCount,
+        String adminDistrictStr = adminDistrict != null ? adminDistrict.getValue() : null;
+        List<House> houses = houseRepository.searchHomes(adminDistrictStr, peopleCount,
                 minPrice, maxPrice,
                 parseStartDate, parseEndDate, pageable);
 

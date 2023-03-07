@@ -4,6 +4,8 @@ import com.example.airbnbpractice.common.dto.ResponseDto;
 import com.example.airbnbpractice.common.security.UserDetailsImpl;
 import com.example.airbnbpractice.dto.HouseRequestDto;
 import com.example.airbnbpractice.dto.HouseResponseDto;
+import com.example.airbnbpractice.entity.AdministerEnum;
+import com.example.airbnbpractice.entity.TempEnum;
 import com.example.airbnbpractice.service.HouseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -17,10 +19,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.beans.PropertyEditorSupport;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -38,10 +42,7 @@ public class HouseController {
     @Operation(summary = "숙소 검색", description = "최초 조회도 포함. 소속행정구역(특별시, 광역시는 도에서 분리)," +
             "희망 가격대 포함여부, 희망 기간 예약가능 여부를 검토하여 페이징처리하여 반환합니다.")
     public ResponseDto<List<HouseResponseDto.HouseRes>> getHouses(
-            @RequestParam(required = false)
-            @Schema(example = "서울특별시",
-                    description = "서울특별시 부산광역시 인천광역시 대구광역시 대전광역시 광주광역시 울산광역시 제주특별시 경기도 강원도 충청남도 충청북도 전라북도 전라남도 경상북도 경상남도")
-            String adminDistrict,
+            @RequestParam(required = false) AdministerEnum adminDistrict,
             @RequestParam(required = false) @Schema(example = "3") Integer peopleCount,
             @RequestParam(required = false) @Nullable @Schema(example = "0") Integer minPrice,
             @RequestParam(required = false) @Schema(example = "1000000") Integer maxPrice,
@@ -53,10 +54,6 @@ public class HouseController {
             @RequestParam(defaultValue = "false") @NotNull Boolean isAsc,
             @RequestParam(required = false) Long userId
     ) {
-
-        System.out.println(peopleCount);
-        System.out.println(maxPrice);
-        System.out.println(minPrice);
 
         return ResponseDto.of(HttpStatus.OK, "등록 성공", houseService.getHouses(
                 adminDistrict, peopleCount, minPrice, maxPrice,
@@ -91,7 +88,7 @@ public class HouseController {
         return ResponseDto.of(HttpStatus.OK, "등록 성공", res);
     }
 
-    @PutMapping(value = "/{houseId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(value = "/{houseId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "숙소 수정", description = "기존에 등록한 숙소의 정보를 수정합니다")
     public ResponseDto<HouseResponseDto.HouseRes> updateHouse(
             @PathVariable Long houseId,
@@ -138,5 +135,15 @@ public class HouseController {
         return ResponseDto.of(HttpStatus.OK, "삭제 성공");
     }
 
+    public class TempEnumConverter extends PropertyEditorSupport {
+        public void setAsText(final String text) throws IllegalArgumentException {
+            setValue(AdministerEnum.fromValue(text));
+        }
+    }
+
+    @InitBinder
+    public void initBinder(final WebDataBinder webdataBinder) {
+        webdataBinder.registerCustomEditor(AdministerEnum.class, new TempEnumConverter());
+    }
 
 }
