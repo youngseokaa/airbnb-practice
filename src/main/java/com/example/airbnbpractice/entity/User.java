@@ -29,8 +29,6 @@ public class User extends Timestamped {
     @Schema(example = "운전피곤해", description = "사용자를 구분할 닉네임. 중복되면 안됩니다.")
     private String nickname;
     @Column(nullable = false)
-    @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,30}$",
-            message = "비밀번호는 8~30 자리이면서 1개 이상의 알파벳, 숫자, 특수문자를 포함해야합니다.")
     private String password;
 
     @Column(nullable = false)
