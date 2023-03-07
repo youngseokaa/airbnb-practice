@@ -68,7 +68,7 @@ public class UserService {
         if(!passwordEncoder.matches(password, user.getPassword())){
             throw CustomClientException.of(NOT_MATCH_PASSWORD);
         }
-
+//ㅁㄴㅇㄻㄴㄹㅇ
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getEmail(), user.getRole()));
 
         return new UserResponseDto(user);
