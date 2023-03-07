@@ -9,6 +9,7 @@ import com.example.airbnbpractice.dto.TagTypeRequestDto;
 import com.example.airbnbpractice.dto.TagTypeResponseDto;
 import com.example.airbnbpractice.entity.UserRoleEnum;
 import com.example.airbnbpractice.service.TagService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirements;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,8 @@ public class TagController {
 
     @PostMapping(value = "/{tagTypeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Secured(UserRoleEnum.Authority.ADMIN)
+    @Operation(summary = "태그 추가", description = "태그를 추가합니다. 태그는 각 태그타입에 매칭해서 분류해야합니다." +
+            "예를 들어, 샴푸, 린스 등은 '욕실'태그타입에 매칭합니다.")
     public ResponseDto<TagResponseDto> addTag(@PathVariable Long tagTypeId,
                                               @ModelAttribute TagRequestDto tagRequestDto){
         TagResponseDto td = tagService.addTag(tagTypeId, tagRequestDto);
@@ -38,6 +41,7 @@ public class TagController {
 
     @GetMapping()
     @SecurityRequirements()
+    @Operation(summary = "태그 조회")
     public ResponseDto<List<TagResponseDto>> getTags() {
         return ResponseDto.of(HttpStatus.OK,"조회 성공", tagService.getTags());
     }
