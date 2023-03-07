@@ -6,6 +6,9 @@ import java.util.Optional;
 
 
 public interface HouseWishRepository extends JpaRepository<HouseWish, Long> {
-    Optional<Object> findByHouseIdAndUserId(Long houseId, Long userId);
-    void deleteHouseWishByHouseIdAndUserId(Long houseId, Long userId);
+    Optional<HouseWish> findByHouseIdAndUserId(Long houseId, Long userId);
+
+    void deleteByUserIdAndHouseId(Long userId, Long houseId);
+
+
 }

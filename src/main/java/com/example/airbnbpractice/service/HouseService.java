@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -52,9 +53,6 @@ public class HouseService {
 
         LocalDate parseStartDate = (startDate != null && !startDate.isEmpty()) ? LocalDate.parse(startDate) : null;
         LocalDate parseEndDate = (endDate != null && !endDate.isEmpty()) ? LocalDate.parse(endDate) : null;
-
-        System.out.println(startDate);
-        System.out.println(endDate);
 
         String adminDistrictStr = adminDistrict != null ? adminDistrict.getValue() : null;
         List<House> houses = houseRepository.searchHomes(adminDistrictStr, peopleCount,
@@ -149,7 +147,7 @@ public class HouseService {
         House house = houseRepository.findById(houseId).orElseThrow(() -> new CustomClientException(ErrorMessage.NO_HOUSE));
 
         if (houseWishRepository.findByHouseIdAndUserId(houseId, user.getId()).isPresent()) {
-            houseWishRepository.deleteHouseWishByHouseIdAndUserId(user.getId(), house.getId());
+            houseWishRepository.deleteByUserIdAndHouseId(user.getId(), house.getId());
             return false;
         }
         HouseWish houseWish = new HouseWish(user, house);
