@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,7 +30,7 @@ public class UserController {
     @SecurityRequirements()
     @Operation(summary = "회원가입하기", description = "회원가입하기 이메일,닉네임 중복 불가." +
             "isAdmin은 필수, isAdmin이 true면 adminToken을 확인")
-    public ResponseDto<UserResponseDto> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
+    public ResponseDto<UserResponseDto> signup(@RequestBody @Validated SignupRequestDto signupRequestDto) {
          UserResponseDto userResponseDto = userService.signup(signupRequestDto);
         return ResponseDto.of(HttpStatus.OK,"회원가입에 성공하였습니다",userResponseDto);
     }
@@ -40,7 +41,7 @@ public class UserController {
     @Operation(description = "이메일 중복 체크")
     public ResponseDto<CheckResponseDto> checkEmail(@RequestParam String email){
        CheckResponseDto checkResponseDto= userService.checkEmail(email);
-        return ResponseDto.of(HttpStatus.OK,"중복이 확인되었습니다",checkResponseDto);
+        return ResponseDto.of(HttpStatus.OK,"사용가능으로 확인되었습니다",checkResponseDto);
     }
 
     // 닉네임 중복 확인
@@ -49,7 +50,7 @@ public class UserController {
     @Operation(description = "닉네임 중복 체크")
     public ResponseDto<CheckResponseDto> checkNickname(@RequestParam String nickName){
         CheckResponseDto checkResponseDto= userService.checkNickname(nickName);
-        return ResponseDto.of(HttpStatus.OK,"중복이 확인되었습니다",checkResponseDto);
+        return ResponseDto.of(HttpStatus.OK,"사용가능으로 확인되었습니다",checkResponseDto);
     }
 
     // 로그인 하기
